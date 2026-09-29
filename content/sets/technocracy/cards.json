@@ -1,0 +1,437 @@
+[
+  {
+    "definitionId": "technocracy:street-hacker",
+    "name": "Street Hacker",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 1,
+    "attack": 1,
+    "health": 1,
+    "rulesText": "Street Soldier - Technocracy",
+    "flavorText": "He was just a kid, but he could break into systems like an adult, I'll tell ya that much... - Tycho, CFO Interweave Corp.",
+    "effects": [],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:neon-brawler",
+    "name": "Neon Brawler",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 4,
+    "attack": 2,
+    "health": 1,
+    "rulesText": "Gains +1 attack when equipped with any artifact.",
+    "flavorText": "Just punch him, you pussy!",
+    "effects": [
+      {
+        "type": "conditional_gain_attack",
+        "value": 1,
+        "trigger": "on_equip",
+        "condition": "equipped"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:techno-scout",
+    "name": "Techno Scout",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "UNCOMMON",
+    "cost": 3,
+    "attack": 1,
+    "health": 1,
+    "rulesText": "When Techno Scout is summoned, you may destroy an enemy augmentation.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "destroy_enchantment",
+        "trigger": "on_summon",
+        "target": "enemy_enchantment"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:edgerunner-soldier",
+    "name": "Edgerunner Soldier",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 3,
+    "health": 2,
+    "rulesText": "Slippery when wet",
+    "flavorText": "",
+    "effects": [],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:grenadier",
+    "name": "Grenadier",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "UNCOMMON",
+    "cost": 3,
+    "attack": 2,
+    "health": 1,
+    "rulesText": "When Grenadier is summoned, you may destroy 1 artifact.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "destroy_equipment",
+        "trigger": "on_summon",
+        "target": "enemy_equipment"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:cyborg-gunner",
+    "name": "Cyborg Gunner",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 1,
+    "attack": 2,
+    "health": 1,
+    "rulesText": "Military Unit - Technocracy",
+    "flavorText": "Their guns were built right into their hands, but they looked as human as any of us.",
+    "effects": [],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:neon-samurai",
+    "name": "Neon Samurai",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 3,
+    "health": 1,
+    "rulesText": "Unit - Urban District 12",
+    "flavorText": "I don't talk to people like you.",
+    "effects": [],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:cybernetic-enforcer",
+    "name": "Cybernetic Enforcer",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 3,
+    "attack": 3,
+    "health": 3,
+    "rulesText": "Military Unit - Technocracy",
+    "flavorText": "",
+    "effects": [],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:street-mercenary",
+    "name": "Street Mercenary",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 2,
+    "health": 1,
+    "rulesText": "Aux Unit.",
+    "flavorText": "",
+    "effects": [],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:tactical-drone",
+    "name": "Tactical Drone",
+    "setId": "technocracy",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 1,
+    "attack": 0,
+    "health": 1,
+    "rulesText": "Reduces the cost of all your artifact by 1 Energy while it's on the field.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "equipment_cost_reduction",
+        "value": 1,
+        "trigger": "constant"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:plasma-rifle",
+    "name": "Plasma Rifle",
+    "setId": "technocracy",
+    "cardType": "ARTIFACT",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Equip to a creature. That creature gains +2 attack.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "gain_attack",
+        "value": 2,
+        "target": "creature",
+        "trigger": "constant"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:energy-blade",
+    "name": "Energy Blade",
+    "setId": "technocracy",
+    "cardType": "ARTIFACT",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Equip to a creature. That creature gains +1 attack and +1 defense.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "gain_attack",
+        "value": 1,
+        "target": "creature",
+        "trigger": "constant"
+      },
+      {
+        "type": "gain_defense",
+        "value": 1,
+        "target": "creature",
+        "trigger": "constant"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:holo-shield",
+    "name": "Holo Shield",
+    "setId": "technocracy",
+    "cardType": "ARTIFACT",
+    "rarity": "UNCOMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Attached creature gains -1 attack and +3 health.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "gain_defense",
+        "value": 3,
+        "target": "creature",
+        "trigger": "constant"
+      },
+      {
+        "type": "gain_attack",
+        "value": -1,
+        "target": "creature",
+        "trigger": "constant"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:nightmare-gun",
+    "name": "Nightmare Gun",
+    "setId": "technocracy",
+    "cardType": "ARTIFACT",
+    "rarity": "RARE",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "While attached, at your upkeep deal 1 damage to any creature or player.",
+    "flavorText": "It's not a gun, it's a weapon of mass destruction.",
+    "effects": [
+      {
+        "type": "deal_damage",
+        "value": 1,
+        "target": "creature_or_player",
+        "trigger": "on_upkeep"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:nanotech-armor",
+    "name": "Nanotech Armor",
+    "setId": "technocracy",
+    "cardType": "ARTIFACT",
+    "rarity": "RARE",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Equip to a creature. That creature gains +1 defense and regenerates 1 health at the start of your turn.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "gain_defense",
+        "value": 1,
+        "target": "creature",
+        "trigger": "constant"
+      },
+      {
+        "type": "regenerate_health",
+        "value": 1,
+        "target": "creature",
+        "trigger": "on_upkeep"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:power-grid",
+    "name": "Power Grid",
+    "setId": "technocracy",
+    "cardType": "AUGMENTATION",
+    "rarity": "LEGENDARY",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "At upkeep +1 Energy. When you play an artifact, draw a card.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "increase_energy_regen",
+        "value": 1,
+        "trigger": "on_upkeep"
+      },
+      {
+        "type": "draw_cards",
+        "value": 1,
+        "trigger": "on_play_equipment"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:battery-array",
+    "name": "Battery Array",
+    "setId": "technocracy",
+    "cardType": "AUGMENTATION",
+    "rarity": "COMMON",
+    "cost": 1,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "At upkeep, +1 energy.",
+    "flavorText": "",
+    "effects": [
+      {
+        "type": "increase_energy_regen",
+        "value": 1,
+        "trigger": "on_upkeep"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:data-surge",
+    "name": "Data Surge",
+    "setId": "technocracy",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Draw 2 cards.",
+    "flavorText": "Plug your brain into the machine and let go.",
+    "effects": [
+      {
+        "type": "draw_cards",
+        "value": 2,
+        "trigger": "on_cast"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:plasma-blast",
+    "name": "Plasma Blast",
+    "setId": "technocracy",
+    "cardType": "SPELL",
+    "rarity": "UNCOMMON",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Deal 3 damage to target creature or player.",
+    "flavorText": "A hot stream, right in your face.",
+    "effects": [
+      {
+        "type": "deal_damage",
+        "value": 3,
+        "trigger": "on_cast",
+        "target": "creature_or_player"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:emp-pulse",
+    "name": "EMP Pulse",
+    "setId": "technocracy",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Destroy 1 artifact.",
+    "flavorText": "A powerful electromagnetic pulse that disables all electronic devices.",
+    "effects": [
+      {
+        "type": "destroy_equipment",
+        "trigger": "on_cast",
+        "target": "equipment"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  },
+  {
+    "definitionId": "technocracy:code-erasure",
+    "name": "Code Erasure",
+    "setId": "technocracy",
+    "cardType": "SPELL",
+    "rarity": "UNCOMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Destroy 1 augmentation.",
+    "flavorText": "Delete their code, delete their reality.",
+    "effects": [
+      {
+        "type": "destroy_enchantment",
+        "trigger": "on_cast",
+        "target": "enchantment"
+      }
+    ],
+    "art": "technocracy",
+    "keywords": []
+  }
+]

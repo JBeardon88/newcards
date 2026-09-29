@@ -1,0 +1,514 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "effect.schema.json",
+  "description": "Only these effect shapes are supported. Trigger/card and attachment compatibility is additionally checked by src/content/validate.ts.",
+  "definitions": {
+    "draw_cards": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "draw_cards"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        }
+      },
+      "required": ["type", "value", "trigger"]
+    },
+    "deal_damage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "deal_damage"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        },
+        "target": {
+          "enum": ["enemy_creature", "creature", "creature_or_player"]
+        }
+      },
+      "required": ["type", "value", "trigger", "target"]
+    },
+    "increase_energy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "increase_energy"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        },
+        "duration": {
+          "enum": ["this_turn", "end_of_turn"]
+        }
+      },
+      "required": ["type", "value", "trigger"]
+    },
+    "summon_token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "summon_token"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        }
+      },
+      "required": ["type", "value", "trigger"]
+    },
+    "destroy_equipment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "destroy_equipment"
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        },
+        "target": {
+          "enum": ["equipment", "enemy_equipment"]
+        }
+      },
+      "required": ["type", "trigger", "target"]
+    },
+    "destroy_enchantment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "destroy_enchantment"
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        },
+        "target": {
+          "enum": ["enchantment", "enemy_enchantment"]
+        }
+      },
+      "required": ["type", "trigger", "target"]
+    },
+    "return_from_discard": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "return_from_discard"
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        },
+        "target": {
+          "enum": ["creature"]
+        }
+      },
+      "required": ["type", "trigger", "target"]
+    },
+    "gain_attack": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "gain_attack"
+            },
+            "value": {
+              "type": "integer",
+              "maximum": 9007199254740991,
+              "minimum": -9007199254740991
+            },
+            "trigger": {
+              "const": "constant"
+            },
+            "target": {
+              "enum": [
+                "creature",
+                "equipped_creature",
+                "enchanted_creature",
+                "creatures_you_control_with_mycelium_network"
+              ]
+            },
+            "condition": {
+              "const": "mycelium_network"
+            }
+          },
+          "required": ["type", "value", "trigger", "target"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "gain_attack"
+            },
+            "value": {
+              "type": "integer",
+              "maximum": 9007199254740991,
+              "minimum": -9007199254740991
+            },
+            "trigger": {
+              "enum": [
+                "on_cast",
+                "on_summon",
+                "on_upkeep",
+                "on_death",
+                "on_play_equipment"
+              ]
+            },
+            "target": {
+              "enum": [
+                "creature",
+                "equipped_creature",
+                "enchanted_creature",
+                "all_enemy_creatures",
+                "all_creatures_you_control"
+              ]
+            },
+            "duration": {
+              "enum": ["this_turn", "end_of_turn"]
+            }
+          },
+          "required": ["type", "value", "trigger", "target"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "gain_attack"
+            },
+            "value": {
+              "type": "integer",
+              "maximum": 9007199254740991,
+              "minimum": -9007199254740991
+            },
+            "trigger": {
+              "const": "on_attack"
+            },
+            "target": {
+              "const": "attacking_creature"
+            },
+            "duration": {
+              "const": "end_of_turn"
+            }
+          },
+          "required": ["type", "value", "trigger", "target", "duration"]
+        }
+      ]
+    },
+    "gain_defense": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "gain_defense"
+            },
+            "value": {
+              "type": "integer",
+              "maximum": 9007199254740991,
+              "minimum": -9007199254740991
+            },
+            "trigger": {
+              "const": "constant"
+            },
+            "target": {
+              "enum": [
+                "creature",
+                "equipped_creature",
+                "enchanted_creature",
+                "creatures_you_control_with_mycelium_network"
+              ]
+            },
+            "condition": {
+              "const": "mycelium_network"
+            }
+          },
+          "required": ["type", "value", "trigger", "target"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "gain_defense"
+            },
+            "value": {
+              "type": "integer",
+              "maximum": 9007199254740991,
+              "minimum": -9007199254740991
+            },
+            "trigger": {
+              "enum": [
+                "on_cast",
+                "on_summon",
+                "on_upkeep",
+                "on_death",
+                "on_play_equipment"
+              ]
+            },
+            "target": {
+              "enum": [
+                "creature",
+                "equipped_creature",
+                "enchanted_creature",
+                "all_enemy_creatures",
+                "all_creatures_you_control"
+              ]
+            }
+          },
+          "required": ["type", "value", "trigger", "target"]
+        }
+      ]
+    },
+    "lose_attack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "lose_attack"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "enum": [
+            "on_cast",
+            "on_summon",
+            "on_upkeep",
+            "on_death",
+            "on_play_equipment"
+          ]
+        },
+        "target": {
+          "enum": [
+            "creature",
+            "equipped_creature",
+            "enchanted_creature",
+            "all_enemy_creatures",
+            "all_creatures_you_control"
+          ]
+        },
+        "duration": {
+          "enum": ["this_turn", "end_of_turn"]
+        }
+      },
+      "required": ["type", "value", "trigger", "target", "duration"]
+    },
+    "regenerate_health": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "regenerate_health"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "const": "on_upkeep"
+        },
+        "target": {
+          "enum": ["creature", "equipped_creature", "enchanted_creature"]
+        }
+      },
+      "required": ["type", "value", "trigger", "target"]
+    },
+    "grant_ability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "grant_ability"
+        },
+        "value": {
+          "const": "mycelium_network"
+        },
+        "trigger": {
+          "const": "constant"
+        },
+        "target": {
+          "enum": ["creature", "equipped_creature", "enchanted_creature"]
+        }
+      },
+      "required": ["type", "value", "trigger", "target"]
+    },
+    "conditional_gain_attack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "conditional_gain_attack"
+        },
+        "value": {
+          "type": "integer",
+          "maximum": 9007199254740991,
+          "minimum": -9007199254740991
+        },
+        "trigger": {
+          "const": "on_equip"
+        },
+        "condition": {
+          "const": "equipped"
+        }
+      },
+      "required": ["type", "value", "trigger", "condition"]
+    },
+    "equipment_cost_reduction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "equipment_cost_reduction"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "const": "constant"
+        }
+      },
+      "required": ["type", "value", "trigger"]
+    },
+    "increase_energy_regen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "increase_energy_regen"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trigger": {
+          "enum": ["constant", "on_upkeep"]
+        }
+      },
+      "required": ["type", "value", "trigger"]
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/definitions/draw_cards"
+    },
+    {
+      "$ref": "#/definitions/deal_damage"
+    },
+    {
+      "$ref": "#/definitions/increase_energy"
+    },
+    {
+      "$ref": "#/definitions/summon_token"
+    },
+    {
+      "$ref": "#/definitions/destroy_equipment"
+    },
+    {
+      "$ref": "#/definitions/destroy_enchantment"
+    },
+    {
+      "$ref": "#/definitions/return_from_discard"
+    },
+    {
+      "$ref": "#/definitions/gain_attack"
+    },
+    {
+      "$ref": "#/definitions/gain_defense"
+    },
+    {
+      "$ref": "#/definitions/lose_attack"
+    },
+    {
+      "$ref": "#/definitions/regenerate_health"
+    },
+    {
+      "$ref": "#/definitions/grant_ability"
+    },
+    {
+      "$ref": "#/definitions/conditional_gain_attack"
+    },
+    {
+      "$ref": "#/definitions/equipment_cost_reduction"
+    },
+    {
+      "$ref": "#/definitions/increase_energy_regen"
+    }
+  ]
+}

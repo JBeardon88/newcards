@@ -1,5 +1,6 @@
+import { sets } from "../content/catalog";
 import { cards, definitions } from "../data/cards";
-import { PACK_RULES, RULES } from "../data/config";
+import { RULES } from "../data/config";
 import { SeededRng } from "../engine/rng";
 import type {
   Profile,
@@ -50,6 +51,7 @@ export function mintPack(
   owner: Owner = "human",
   now = new Date().toISOString(),
 ): Pack {
+  if (!Object.hasOwn(sets, setId)) throw Error(`Unknown set "${setId}".`);
   const pack: Pack = {
     packId: id(),
     serialNumber: ++p.packSerial,
@@ -68,12 +70,14 @@ export function openPack(
 ): string[] {
   const pack = p.packs.find((x) => x.packId === packId);
   if (!pack || pack.openedAt) throw Error("Pack missing or already opened");
+  const config = sets[pack.setId]?.pack;
+  if (!config) throw Error(`Unknown set "${pack.setId}".`);
   const rng = new SeededRng(p.rngState);
   const slots: Rarity[] = [
-    ...Array<Rarity>(PACK_RULES.common).fill("COMMON"),
-    ...Array<Rarity>(PACK_RULES.uncommon).fill("UNCOMMON"),
-    ...Array.from({ length: PACK_RULES.rare }, () =>
-      rng.next() < PACK_RULES.legendaryChance
+    ...Array<Rarity>(config.common).fill("COMMON"),
+    ...Array<Rarity>(config.uncommon).fill("UNCOMMON"),
+    ...Array.from({ length: config.rare }, () =>
+      rng.next() < config.legendaryChance
         ? ("LEGENDARY" as const)
         : ("RARE" as const),
     ),
@@ -184,8 +188,8 @@ export function createProfile(seed = 20260929): Profile {
     rngState: seed,
     matches: [],
   };
-  for (const set of ["funguys", "technocracy"] as const)
-    for (let i = 0; i < 3; i++) mintPack(p, set);
+  for (const set of Object.values(sets))
+    for (let i = 0; i < set.starterPacks; i++) mintPack(p, set.setId);
   seedAI(p);
   return p;
 }

@@ -1,3 +1,4 @@
+import { mechanic, type QueuedEffectType } from "./mechanics";
 import { cards } from "../data/cards";
 import { RULES } from "../data/config";
 import { deckErrors } from "../economy/collection";
@@ -198,36 +199,49 @@ export function effectTargets(s: GameState, p: PendingEffect): string[] {
   return [];
 }
 function needsTarget(e: Effect) {
-  return [
-    "deal_damage",
-    "destroy_equipment",
-    "destroy_enchantment",
-    "return_from_discard",
-  ].includes(e.type);
+  return mechanic(e.type).targeted;
 }
 function applyEffect(s: GameState, p: PendingEffect, targetId?: string) {
   const { effect: e, owner, sourceId } = p;
   const source = s.cards[sourceId];
   const n = Number(e.value ?? 0);
   const target = targetId ? s.cards[targetId] : undefined;
-  switch (e.type) {
-    case "draw_cards":
+  const modifyStats = () => {
+    const affected =
+      e.target === "all_enemy_creatures"
+        ? creatures(s, other(owner))
+        : e.target === "all_creatures_you_control"
+          ? creatures(s, owner)
+          : source.attachedTo
+            ? [s.cards[source.attachedTo]]
+            : [];
+    for (const c of affected) {
+      if (e.type === "gain_defense") c.bonusHealth += n;
+      else if (e.duration)
+        c.temporaryAttack += e.type === "lose_attack" ? -n : n;
+      else c.bonusAttack += n;
+    }
+  };
+  const handlers: Record<QueuedEffectType, () => void> = {
+    draw_cards: () => {
       draw(s, owner, n);
-      break;
-    case "increase_energy":
+    },
+    increase_energy: () => {
       s.players[owner].energy += n;
       if (e.duration) s.players[owner].temporaryEnergy += n;
-      break;
-    case "deal_damage":
+    },
+    deal_damage: () => {
       if (target) target.damage += n;
       else if (targetId === "human" || targetId === "ai")
         s.players[targetId].life -= n;
-      break;
-    case "destroy_equipment":
-    case "destroy_enchantment":
+    },
+    destroy_equipment: () => {
       if (target) grave(s, target, sourceId);
-      break;
-    case "return_from_discard":
+    },
+    destroy_enchantment: () => {
+      if (target) grave(s, target, sourceId);
+    },
+    return_from_discard: () => {
       if (target) {
         target.zone = "hand";
         target.damage = 0;
@@ -244,8 +258,8 @@ function applyEffect(s: GameState, p: PendingEffect, targetId?: string) {
           sourceId,
         );
       }
-      break;
-    case "summon_token":
+    },
+    summon_token: () => {
       for (let i = 0; i < n; i++) {
         const id = `${s.matchId}:token:${s.events.length}:${i}`;
         s.cards[id] = {
@@ -266,40 +280,27 @@ function applyEffect(s: GameState, p: PendingEffect, targetId?: string) {
         event(
           s,
           "TOKEN_CREATED",
-          "A 1/1 Sporeling sprouted.",
+          `A ${definition(s.cards[id]).attack}/${definition(s.cards[id]).health} ${definition(s.cards[id]).name} sprouted.`,
           id,
           owner,
           sourceId,
         );
       }
-      break;
-    case "regenerate_health":
+    },
+    regenerate_health: () => {
       if (source.attachedTo)
         s.cards[source.attachedTo].damage = Math.max(
           0,
           s.cards[source.attachedTo].damage - n,
         );
-      break;
-    case "gain_attack":
-    case "gain_defense":
-    case "lose_attack": {
-      const affected =
-        e.target === "all_enemy_creatures"
-          ? creatures(s, other(owner))
-          : e.target === "all_creatures_you_control"
-            ? creatures(s, owner)
-            : source.attachedTo
-              ? [s.cards[source.attachedTo]]
-              : [];
-      for (const c of affected) {
-        if (e.type === "gain_defense") c.bonusHealth += n;
-        else if (e.duration)
-          c.temporaryAttack += e.type === "lose_attack" ? -n : n;
-        else c.bonusAttack += n;
-      }
-      break;
-    }
-  }
+    },
+    gain_attack: modifyStats,
+    gain_defense: modifyStats,
+    lose_attack: modifyStats,
+  };
+  if (!mechanic(e.type).queued || !Object.hasOwn(handlers, e.type))
+    throw Error(`Effect "${e.type}" cannot resolve as a queued effect.`);
+  handlers[e.type as QueuedEffectType]();
   event(
     s,
     "EFFECT",

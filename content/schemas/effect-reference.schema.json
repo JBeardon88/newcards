@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "effect-reference.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "implemented": {
+      "type": "boolean"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rulesNotes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "example": {
+      "$ref": "effect.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "implemented",
+    "description",
+    "parameters",
+    "rulesNotes",
+    "example"
+  ]
+}

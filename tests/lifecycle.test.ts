@@ -1,4 +1,30 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+// Engine scenarios use stable sample cards, independent of designer balancing.
+vi.mock("../src/content/catalog", async () => {
+  const { loadContent } = await import("../src/content/validate");
+  const { default: fixture } = await import("./fixtures/content.json");
+  const catalog = loadContent(fixture);
+  return {
+    ...catalog,
+    SETS: Object.fromEntries(
+      Object.values(catalog.sets).map((s) => [s.setId, s.name]),
+    ),
+  };
+});
+beforeEach(() => {
+  // UUID order is an external input to the AI's tie-breaks. Keep it reproducible.
+  let serial = 0;
+  const rng = new SeededRng(1234);
+  vi.spyOn(crypto, "randomUUID").mockImplementation(
+    () =>
+      `${Math.floor(rng.next() * 0x100000000)
+        .toString(16)
+        .padStart(
+          8,
+          "0",
+        )}-0000-4000-8000-${String(++serial).padStart(12, "0")}`,
+  );
+});
 import { definitions, cards } from "../src/data/cards";
 import {
   autoBuild,

@@ -2,11 +2,40 @@
 
 This is a fresh engine, not an architectural port. `JBeardon88/Blockcards` was read only; no files or branches there were changed.
 
+## Authored-content boundary (September 2026)
+
+The 44 runtime definitions from NewCards commit `2753ca2` were moved into
+`content/sets/funguys/cards.json` and `content/sets/technocracy/cards.json`.
+Names, IDs, ordering, stats, rarity, corrected rules text, flavor and effective
+mechanics are unchanged. Set metadata, pack composition and Sporeling data are
+authored JSON too. The legacy runtime files and name-based rarity table were
+removed; the original files remain available in Git history.
+
+The Mycelium Network effect is authored as a named keyword and expands to the
+same internal effect. Legacy token name/stats and recovery destination fields,
+which the engine ignored, were removed from effects. Sporeling stats now live in
+the token definition; recovery still always returns a creature to hand. Legacy
+lowercase effect IDs remain supported and documented, with no runtime renaming.
+Token event text reads the token definition so future designer edits appear in
+the log (the original token produces exactly the original message).
+
+Migration verification matched the complete normalized-definition fingerprint
+and compared the old/new engines through four complete games, with identical
+state and events after every command. The original 48 test assertions remain;
+their cards are now a frozen test-only fixture so designer edits cannot break
+named engine scenarios. Test UUIDs are reproducible because random IDs affect
+the AI's tie-breaking and could make an existing loss-count assertion flaky.
+
+There is no save schema change. Keep existing definition IDs to preserve saved
+collections. Content revisions are not snapshots: existing copies read updated
+stats/text, minted rarities remain recorded, and historical replay requires the
+original content revision. Set versions are metadata, not automatic migrations.
+
 ## Inspected reference material
 
 Before implementation: `README.txt`, `funguys.json`, `sets/technobros.json`, `board.py`, `card.py`, `effects.py`, `combat.py`, `turns.py`, `player.py`, `ai.py`, and `game.py`.
 
-Card source blobs: Funguys `7062384514495d3d932ef50d0a9aa0d43658370a`; Technocracy `86d7a23d5577176a40b1e9c05105cb76a803ff67`. The unchanged JSON is retained under `src/data/*.legacy.json` for traceability.
+Card source blobs: Funguys `7062384514495d3d932ef50d0a9aa0d43658370a`; Technocracy `86d7a23d5577176a40b1e9c05105cb76a803ff67`. The original JSON is preserved in Git history through commit `2753ca2`. The later content-boundary migration replaces runtime legacy files with canonical authored content under `content/`.
 
 ## Retained
 
@@ -28,7 +57,7 @@ Card source blobs: Funguys `7062384514495d3d932ef50d0a9aa0d43658370a`; Technocra
 - Creature on-summon effects with no legal target are skipped, allowing deployment. Targeted spells and attached augmentations require a legal target before energy is paid.
 - Added explicit empty-deck fatigue and defending-player simultaneous-defeat tiebreak to ensure matches terminate.
 - Rarity is new, provisional editable data; the old pools did not have complete rarity information.
-- Corrected a legacy `flavor_text:` typo during normalization, preserving the intended Neon Samurai flavor.
+- Corrected a legacy `flavor_text:` typo during the original normalization, preserving the intended Neon Samurai flavor.
 
 ## Deliberately discarded
 

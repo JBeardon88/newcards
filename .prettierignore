@@ -1,4 +1,3 @@
 node_modules
 dist
-src/data/*.legacy.json
 package-lock.json

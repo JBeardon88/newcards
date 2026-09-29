@@ -1,0 +1,476 @@
+[
+  {
+    "definitionId": "funguys:fungal-scout",
+    "name": "Fungal Scout",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 1,
+    "attack": 1,
+    "health": 1,
+    "rulesText": "",
+    "flavorText": "First to sprout, first to spread.",
+    "effects": [],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:mycelium-guardian",
+    "name": "Mycelium Guardian",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 3,
+    "attack": 2,
+    "health": 2,
+    "rulesText": "Mycelium Network: +1 health while another friendly network creature is present.",
+    "flavorText": "Connected by unseen threads.",
+    "effects": [],
+    "art": "funguys",
+    "keywords": ["MYCELIUM_NETWORK"]
+  },
+  {
+    "definitionId": "funguys:sporeling-swarm",
+    "name": "Sporeling Swarm",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 1,
+    "health": 1,
+    "rulesText": "",
+    "flavorText": "Tiny but many.",
+    "effects": [],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:biotech-shroom",
+    "name": "Biotech Shroom",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "UNCOMMON",
+    "cost": 4,
+    "attack": 3,
+    "health": 2,
+    "rulesText": "",
+    "flavorText": "Engineered for perfection.",
+    "effects": [],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:elder-fungus",
+    "name": "Elder Fungus",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "LEGENDARY",
+    "cost": 5,
+    "attack": 4,
+    "health": 4,
+    "rulesText": "On summon, draw a card.",
+    "flavorText": "Wisdom grown over centuries.",
+    "effects": [
+      {
+        "type": "draw_cards",
+        "value": 1,
+        "trigger": "on_summon"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:spore-slinger",
+    "name": "Spore Slinger",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 3,
+    "attack": 1,
+    "health": 1,
+    "rulesText": "On summon, deal 1 damage to an enemy creature.",
+    "flavorText": "A shot of spores keeps foes at bay.",
+    "effects": [
+      {
+        "type": "deal_damage",
+        "value": 1,
+        "trigger": "on_summon",
+        "target": "enemy_creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:cluster-cap",
+    "name": "Cluster Cap",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 3,
+    "attack": 2,
+    "health": 2,
+    "rulesText": "",
+    "flavorText": "Strength in numbers, even in a single stalk.",
+    "effects": [],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:spore-mother",
+    "name": "Spore Mother",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "RARE",
+    "cost": 4,
+    "attack": 2,
+    "health": 3,
+    "rulesText": "On death, summon two 1/1 Sporelings.",
+    "flavorText": "From decay sprouts new life.",
+    "effects": [
+      {
+        "type": "summon_token",
+        "value": 2,
+        "trigger": "on_death"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:fungal-growth",
+    "name": "Fungal Growth",
+    "setId": "funguys",
+    "cardType": "AUGMENTATION",
+    "rarity": "UNCOMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "augmented creature gains +1/+1 at the beginning of your upkeep.",
+    "flavorText": "Watch as it blooms into something more.",
+    "effects": [
+      {
+        "type": "gain_attack",
+        "value": 1,
+        "trigger": "on_upkeep",
+        "target": "enchanted_creature"
+      },
+      {
+        "type": "gain_defense",
+        "value": 1,
+        "trigger": "on_upkeep",
+        "target": "enchanted_creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:mycelium-armor",
+    "name": "Mycelium Armor",
+    "setId": "funguys",
+    "cardType": "AUGMENTATION",
+    "rarity": "UNCOMMON",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "augmented creature gains Mycelium Network.",
+    "flavorText": "Woven threads of life enhance its defense.",
+    "effects": [
+      {
+        "type": "grant_ability",
+        "value": "mycelium_network",
+        "target": "enchanted_creature",
+        "trigger": "constant"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:symbiotic-link",
+    "name": "Symbiotic Link",
+    "setId": "funguys",
+    "cardType": "AUGMENTATION",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Whenever a creature you control attacks, it gains +1 attack until end of turn.",
+    "flavorText": "They thrive together, or not at all.",
+    "effects": [
+      {
+        "type": "gain_attack",
+        "value": 1,
+        "trigger": "on_attack",
+        "duration": "end_of_turn",
+        "target": "attacking_creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:resilient-growth",
+    "name": "Resilient Growth",
+    "setId": "funguys",
+    "cardType": "AUGMENTATION",
+    "rarity": "UNCOMMON",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "At the beginning of your upkeep, all creatures you control gain +1 defense.",
+    "flavorText": "The longer they stand, the stronger they become.",
+    "effects": [
+      {
+        "type": "gain_defense",
+        "value": 1,
+        "trigger": "on_upkeep",
+        "target": "all_creatures_you_control"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:energy-bloom",
+    "name": "Energy Bloom",
+    "setId": "funguys",
+    "cardType": "AUGMENTATION",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Increase your energy regeneration by 1.",
+    "flavorText": "Their roots tap into endless reserves.",
+    "effects": [
+      {
+        "type": "increase_energy_regen",
+        "value": 1,
+        "trigger": "constant"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:networked-resilience",
+    "name": "Networked Resilience",
+    "setId": "funguys",
+    "cardType": "AUGMENTATION",
+    "rarity": "RARE",
+    "cost": 4,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Creatures you control with Mycelium Network gain +1 defense.",
+    "flavorText": "The network strengthens its own.",
+    "effects": [
+      {
+        "type": "gain_defense",
+        "value": 1,
+        "trigger": "constant",
+        "condition": "mycelium_network",
+        "target": "creatures_you_control_with_mycelium_network"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:spore-burst",
+    "name": "Spore Burst",
+    "setId": "funguys",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Deal 2 damage to target enemy creature.",
+    "flavorText": "A cloud of spores can be deadly.",
+    "effects": [
+      {
+        "type": "deal_damage",
+        "value": 2,
+        "trigger": "on_cast",
+        "target": "enemy_creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:mushroom-insight",
+    "name": "Mushroom Insight",
+    "setId": "funguys",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Draw two cards.",
+    "flavorText": "Their knowledge spans beneath the forest.",
+    "effects": [
+      {
+        "type": "draw_cards",
+        "value": 2,
+        "trigger": "on_cast"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:decay-touch",
+    "name": "Decay Touch",
+    "setId": "funguys",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Destroy target artifact.",
+    "flavorText": "Metal rusts, but spores persist.",
+    "effects": [
+      {
+        "type": "destroy_equipment",
+        "trigger": "on_cast",
+        "target": "equipment"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:spore-cloud",
+    "name": "Spore Cloud",
+    "setId": "funguys",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "All enemy creatures lose 1 attack until end of turn.",
+    "flavorText": "A veil of spores saps their strength.",
+    "effects": [
+      {
+        "type": "lose_attack",
+        "value": 1,
+        "trigger": "on_cast",
+        "duration": "end_of_turn",
+        "target": "all_enemy_creatures"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:regrowth",
+    "name": "Regrowth",
+    "setId": "funguys",
+    "cardType": "SPELL",
+    "rarity": "UNCOMMON",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Return a creature from your graveyard to your hand.",
+    "flavorText": "From death, life anew.",
+    "effects": [
+      {
+        "type": "return_from_discard",
+        "trigger": "on_cast",
+        "target": "creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:energy-infusion",
+    "name": "Energy Infusion",
+    "setId": "funguys",
+    "cardType": "SPELL",
+    "rarity": "COMMON",
+    "cost": 1,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Increase your energy by 2 this turn.",
+    "flavorText": "A sudden surge fuels their growth.",
+    "effects": [
+      {
+        "type": "increase_energy",
+        "value": 2,
+        "trigger": "on_cast",
+        "duration": "this_turn"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:bioluminescent-spore-cloak",
+    "name": "Bioluminescent Spore Cloak",
+    "setId": "funguys",
+    "cardType": "ARTIFACT",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Equipped creature gains +1 defense.",
+    "flavorText": "Glows with the light of a thousand spores.",
+    "effects": [
+      {
+        "type": "gain_defense",
+        "value": 1,
+        "trigger": "constant",
+        "target": "equipped_creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:spore-injector",
+    "name": "Spore Injector",
+    "setId": "funguys",
+    "cardType": "ARTIFACT",
+    "rarity": "COMMON",
+    "cost": 2,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Equipped creature gains +1 attack.",
+    "flavorText": "A tiny prick with deadly consequences.",
+    "effects": [
+      {
+        "type": "gain_attack",
+        "value": 1,
+        "trigger": "constant",
+        "target": "equipped_creature"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  },
+  {
+    "definitionId": "funguys:mycelium-staff",
+    "name": "Mycelium Staff",
+    "setId": "funguys",
+    "cardType": "ARTIFACT",
+    "rarity": "COMMON",
+    "cost": 3,
+    "attack": 0,
+    "health": 0,
+    "rulesText": "Equipped creature gains Mycelium Network.",
+    "flavorText": "Channel the power of the network.",
+    "effects": [
+      {
+        "type": "grant_ability",
+        "value": "mycelium_network",
+        "target": "equipped_creature",
+        "trigger": "constant"
+      }
+    ],
+    "art": "funguys",
+    "keywords": []
+  }
+]

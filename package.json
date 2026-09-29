@@ -9,11 +9,16 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "vite preview --host 0.0.0.0",
-    "format": "prettier --write src tests *.md *.json index.html",
-    "format:check": "prettier --check src tests *.md *.json index.html",
-    "test:ui": "node scripts/check-play-ui.mjs"
+    "format": "prettier --write src tests content scripts/validate-content.mjs *.md *.json index.html",
+    "format:check": "prettier --check src tests content scripts/validate-content.mjs *.md *.json index.html",
+    "test:ui": "node scripts/check-play-ui.mjs",
+    "content:validate": "node scripts/validate-content.mjs",
+    "predev": "node scripts/validate-content.mjs",
+    "prebuild": "node scripts/validate-content.mjs",
+    "pretest": "node scripts/validate-content.mjs"
   },
   "dependencies": {
+    "ajv": "^8.20.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

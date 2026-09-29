@@ -1,0 +1,22 @@
+[
+  {
+    "id": "COMMON",
+    "name": "Common",
+    "description": "Used by common pack slots."
+  },
+  {
+    "id": "UNCOMMON",
+    "name": "Uncommon",
+    "description": "Used by uncommon pack slots."
+  },
+  {
+    "id": "RARE",
+    "name": "Rare",
+    "description": "Used by rare pack slots."
+  },
+  {
+    "id": "LEGENDARY",
+    "name": "Legendary",
+    "description": "May replace a rare slot, according to the set's legendaryChance."
+  }
+]

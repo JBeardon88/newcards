@@ -16,7 +16,8 @@ npm run dev
 Open the URL Vite prints (usually `http://localhost:5173`). In GitHub Codespaces, open port **5173** in the **Ports** panel, then select **Open in Browser**. Vite binds to `0.0.0.0` for port forwarding.
 
 ```sh
-npm test           # headless engine / economy tests
+npm run content:validate # check designer content
+npm test           # content validation plus headless engine / economy tests
 npm run test:watch
 npm run build     # strict TypeScript check and production build
 npm run preview   # serve built application
@@ -68,7 +69,7 @@ State is stored under `newcards.profile` in this browser's localStorage, includi
 
 The **Dev lab** can mint packs, mint one definition, grant two of every definition, set pack/match seeds, launch matches, have the controller make a human decision for testing, reseed AI inventory, inspect state/commands/events/provenance, clear decks and reset the profile. Reseeding adds new AI copies and retains old histories; it is blocked during a match.
 
-Rarity assignments and rules live in `src/data/config.ts`; normalization is in `src/data/cards.ts`; the original card JSON is preserved for traceability. All rarities are provisional. UI cards use CSS artwork, no external image or font service.
+Card design lives under `content/sets/`, including explicit IDs, rarity, stats, text and effects. Set files control pack composition. Start with [CONTENT_GUIDE.md](CONTENT_GUIDE.md); the keyword/effect vocabulary is in `content/keywords/`. Run `npm run content:validate` to check edits. Validation also runs before development, tests and builds. UI cards use existing CSS placeholder themes, no external image or font service.
 
 ## Boundaries and limitations
 

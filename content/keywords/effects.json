@@ -1,0 +1,206 @@
+[
+  {
+    "id": "draw_cards",
+    "name": "Draw cards",
+    "implemented": true,
+    "description": "Draw value cards for the source's controller.",
+    "parameters": "Required: value (nonnegative integer), trigger. No target.",
+    "rulesNotes": "An empty deck causes escalating fatigue. Automatic; no 'may' option.",
+    "example": {
+      "type": "draw_cards",
+      "value": 2,
+      "trigger": "on_cast"
+    }
+  },
+  {
+    "id": "deal_damage",
+    "name": "Deal damage",
+    "implemented": true,
+    "description": "Deal value damage to a selected creature or player.",
+    "parameters": "Required: value (nonnegative integer), trigger, target: enemy_creature, creature, or creature_or_player.",
+    "rulesNotes": "creature means either player's battlefield creature. creature_or_player adds both players. If no targets remain, skip the effect.",
+    "example": {
+      "type": "deal_damage",
+      "value": 2,
+      "trigger": "on_cast",
+      "target": "enemy_creature"
+    }
+  },
+  {
+    "id": "increase_energy",
+    "name": "Increase energy",
+    "implemented": true,
+    "description": "Give energy to the source's controller.",
+    "parameters": "Required: value (nonnegative integer), trigger. Optional duration: this_turn or end_of_turn.",
+    "rulesNotes": "Without duration, energy persists. With duration, unspent bonus energy expires at the end of the active turn.",
+    "example": {
+      "type": "increase_energy",
+      "value": 2,
+      "trigger": "on_cast",
+      "duration": "this_turn"
+    }
+  },
+  {
+    "id": "summon_token",
+    "name": "Summon Sporelings",
+    "implemented": true,
+    "description": "Summon value ephemeral creatures using content/tokens/cards.json's token:sporeling definition.",
+    "parameters": "Required: value (nonnegative integer), trigger. No target.",
+    "rulesNotes": "Only Sporelings are currently supported. Tokens enter tapped and summoning sick, cannot be recovered by Regrowth, and are never collectible.",
+    "example": {
+      "type": "summon_token",
+      "value": 2,
+      "trigger": "on_death"
+    }
+  },
+  {
+    "id": "destroy_equipment",
+    "name": "Destroy artifact",
+    "implemented": true,
+    "description": "Destroy a selected battlefield artifact.",
+    "parameters": "Required: trigger, target: equipment or enemy_equipment. No value.",
+    "rulesNotes": "Equipment is the retained engine identifier for artifact. equipment allows either owner. Resolution is mandatory when a legal target exists.",
+    "example": {
+      "type": "destroy_equipment",
+      "trigger": "on_cast",
+      "target": "equipment"
+    }
+  },
+  {
+    "id": "destroy_enchantment",
+    "name": "Destroy augmentation",
+    "implemented": true,
+    "description": "Destroy a selected battlefield augmentation.",
+    "parameters": "Required: trigger, target: enchantment or enemy_enchantment. No value.",
+    "rulesNotes": "Enchantment is the retained engine identifier for augmentation. enchantment allows either owner. Resolution is mandatory when a legal target exists.",
+    "example": {
+      "type": "destroy_enchantment",
+      "trigger": "on_summon",
+      "target": "enemy_enchantment"
+    }
+  },
+  {
+    "id": "return_from_discard",
+    "name": "Recover creature",
+    "implemented": true,
+    "description": "Return one of your nontoken creatures from the graveyard to your hand.",
+    "parameters": "Required: trigger, target: creature. No value.",
+    "rulesNotes": "This target always means your graveyard here. Destination is always hand; damage and bonuses reset. It can survive settlement if it stays out of the graveyard.",
+    "example": {
+      "type": "return_from_discard",
+      "trigger": "on_cast",
+      "target": "creature"
+    }
+  },
+  {
+    "id": "gain_attack",
+    "name": "Modify attack",
+    "implemented": true,
+    "description": "Add value attack; negative values reduce attack.",
+    "parameters": "Required: value (signed integer), trigger, target. Optional duration for queued effects: this_turn or end_of_turn.",
+    "rulesNotes": "constant: attached creature or creatures_you_control_with_mycelium_network. Queued: attached creature, all_enemy_creatures, or all_creatures_you_control. on_attack: requires attacking_creature and end_of_turn; applies to every friendly attacker, not just this source. Without duration queued bonuses persist on the match card.",
+    "example": {
+      "type": "gain_attack",
+      "value": 1,
+      "trigger": "constant",
+      "target": "equipped_creature"
+    }
+  },
+  {
+    "id": "gain_defense",
+    "name": "Modify health",
+    "implemented": true,
+    "description": "Add value maximum/current health; negative values reduce it.",
+    "parameters": "Required: value (signed integer), trigger, target. No duration.",
+    "rulesNotes": "constant: attached creature or creatures_you_control_with_mycelium_network. Queued: attached creature, all_enemy_creatures, or all_creatures_you_control. Queued bonuses persist; constant bonuses disappear when the source stops applying. For the network target, condition: mycelium_network is optional and redundant.",
+    "example": {
+      "type": "gain_defense",
+      "value": 1,
+      "trigger": "on_upkeep",
+      "target": "all_creatures_you_control"
+    }
+  },
+  {
+    "id": "lose_attack",
+    "name": "Temporarily reduce attack",
+    "implemented": true,
+    "description": "Reduce attack by value until turn end.",
+    "parameters": "Required: value (nonnegative integer), trigger, target, duration: this_turn or end_of_turn.",
+    "rulesNotes": "Targets: attached creature, all_enemy_creatures, or all_creatures_you_control. Attack is clamped to zero. Permanent reductions use gain_attack with a negative value.",
+    "example": {
+      "type": "lose_attack",
+      "value": 1,
+      "trigger": "on_cast",
+      "target": "all_enemy_creatures",
+      "duration": "end_of_turn"
+    }
+  },
+  {
+    "id": "regenerate_health",
+    "name": "Heal attached creature",
+    "implemented": true,
+    "description": "Remove up to value marked damage from the bearer.",
+    "parameters": "Required: value (nonnegative integer), trigger: on_upkeep, target: an attached creature.",
+    "rulesNotes": "Does not increase maximum health. Artifact must be attached; augmentation uses enchanted_creature.",
+    "example": {
+      "type": "regenerate_health",
+      "value": 1,
+      "trigger": "on_upkeep",
+      "target": "equipped_creature"
+    }
+  },
+  {
+    "id": "grant_ability",
+    "name": "Grant Mycelium Network",
+    "implemented": true,
+    "description": "Give the attached bearer Mycelium Network while this attachment applies.",
+    "parameters": "Required: value: mycelium_network, trigger: constant, target: an attached creature.",
+    "rulesNotes": "The only supported granted ability is mycelium_network. This lowercase value is the engine identifier for MYCELIUM_NETWORK.",
+    "example": {
+      "type": "grant_ability",
+      "value": "mycelium_network",
+      "trigger": "constant",
+      "target": "enchanted_creature"
+    }
+  },
+  {
+    "id": "conditional_gain_attack",
+    "name": "Attack while equipped",
+    "implemented": true,
+    "description": "A creature gains value attack while at least one artifact is attached to it.",
+    "parameters": "Required: value (signed integer), trigger: on_equip, condition: equipped. No target.",
+    "rulesNotes": "CREATURE only. This is a derived bonus, not a repeating event; multiple artifacts do not multiply it.",
+    "example": {
+      "type": "conditional_gain_attack",
+      "value": 1,
+      "trigger": "on_equip",
+      "condition": "equipped"
+    }
+  },
+  {
+    "id": "equipment_cost_reduction",
+    "name": "Reduce artifact cost",
+    "implemented": true,
+    "description": "While deployed, reduce the controller's artifact play costs by value.",
+    "parameters": "Required: value (nonnegative integer), trigger: constant. No target.",
+    "rulesNotes": "Does not reduce the attachment cost. Multiple sources stack; play costs cannot be negative.",
+    "example": {
+      "type": "equipment_cost_reduction",
+      "value": 1,
+      "trigger": "constant"
+    }
+  },
+  {
+    "id": "increase_energy_regen",
+    "name": "Increase upkeep energy",
+    "implemented": true,
+    "description": "While deployed, add value to the controller's normal upkeep energy.",
+    "parameters": "Required: value (nonnegative integer), trigger: constant or on_upkeep. No target.",
+    "rulesNotes": "Both trigger spellings behave identically. Multiple sources stack. Unlike other artifact upkeep effects, this applies even to an unattached artifact.",
+    "example": {
+      "type": "increase_energy_regen",
+      "value": 1,
+      "trigger": "constant"
+    }
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "setId": "funguys",
+  "name": "Funguys",
+  "description": "The Funguys set.",
+  "version": 1,
+  "starterPacks": 3,
+  "pack": {
+    "common": 8,
+    "uncommon": 3,
+    "rare": 1,
+    "legendaryChance": 0.1
+  },
+  "art": {
+    "theme": "funguys",
+    "symbol": "♧",
+    "title": "MYCELIUM NETWORK"
+  }
+}

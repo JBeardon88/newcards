@@ -1,0 +1,17 @@
+[
+  {
+    "definitionId": "token:sporeling",
+    "name": "Sporeling",
+    "setId": "funguys",
+    "cardType": "CREATURE",
+    "rarity": "COMMON",
+    "cost": 0,
+    "attack": 1,
+    "health": 1,
+    "rulesText": "Ephemeral token. Not a minted collectible.",
+    "flavorText": "",
+    "effects": [],
+    "art": "funguys",
+    "keywords": []
+  }
+]

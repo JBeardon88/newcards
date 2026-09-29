@@ -2,7 +2,8 @@ export type Owner = "human" | "ai";
 export type CardType = "CREATURE" | "SPELL" | "ARTIFACT" | "AUGMENTATION";
 export type Rarity = "COMMON" | "UNCOMMON" | "RARE" | "LEGENDARY";
 export type Lifecycle = "ALIVE" | "DEAD" | "CONSUMED" | "DESTROYED";
-export type SetId = "funguys" | "technocracy";
+// Set identity is validated against the content catalog, not a hard-coded union.
+export type SetId = string;
 export interface Effect {
   type: string;
   value?: number | string;

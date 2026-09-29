@@ -1,3 +1,4 @@
+import { sets } from "../content/catalog";
 import { cards } from "../data/cards";
 import type { CardInstance, MatchCard, GameState } from "../engine/model";
 import { stats } from "../engine/rules";
@@ -28,7 +29,7 @@ export function Card({
       title={`${d.name} · ${d.cost} energy · ${d.rulesText}`}
       disabled={disabled}
       onClick={onClick}
-      className={`card ${d.setId} ${selected ? "selected" : ""} ${matchCard?.tapped ? "tapped" : ""}`}
+      className={`card ${d.art} ${selected ? "selected" : ""} ${matchCard?.tapped ? "tapped" : ""}`}
       aria-label={
         label ?? `${d.name}${instance ? ` #${instance.serialNumber}` : ""}`
       }
@@ -40,18 +41,14 @@ export function Card({
       <div className="art">
         <span>
           {d.cardType === "CREATURE"
-            ? d.setId === "funguys"
-              ? "♧"
-              : "◈"
+            ? sets[d.setId].art.symbol
             : d.cardType === "ARTIFACT"
               ? "⚒"
               : d.cardType === "SPELL"
                 ? "ϟ"
                 : "◎"}
         </span>
-        <small>
-          {d.setId === "funguys" ? "MYCELIUM NETWORK" : "TECHNOCRACY"}
-        </small>
+        <small>{sets[d.setId].art.title}</small>
       </div>
       <div className="card-type">
         {d.cardType} <span className={d.rarity.toLowerCase()}>{d.rarity}</span>

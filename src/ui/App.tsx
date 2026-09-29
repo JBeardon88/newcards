@@ -6,7 +6,7 @@ import type {
   SetId,
 } from "../engine/model";
 import { cards, definitions } from "../data/cards";
-import { SETS } from "../data/config";
+import { SETS, sets } from "../content/catalog";
 import {
   autoBuild,
   createProfile,
@@ -191,12 +191,11 @@ export function App() {
   );
   const autoButtons = (
     <div className="actions">
-      <button onClick={() => build("funguys")}>
-        Auto-build Set A · Funguys
-      </button>
-      <button onClick={() => build("technocracy")}>
-        Auto-build Set B · Technocracy
-      </button>
+      {Object.values(sets).map((set) => (
+        <button key={set.setId} onClick={() => build(set.setId)}>
+          Auto-build {set.name}
+        </button>
+      ))}
       <button onClick={() => build()}>Auto-build Mixed</button>
     </div>
   );
@@ -384,12 +383,12 @@ export function App() {
                 .filter((x) => x.ownerId === "human" && !x.openedAt)
                 .map((pack) => (
                   <button
-                    className={`pack ${pack.setId}`}
+                    className={`pack ${sets[pack.setId].art.theme}`}
                     key={pack.packId}
                     onClick={() => open(pack.packId)}
                   >
                     <span>12 UNIQUE CARDS</span>
-                    <b>{pack.setId === "funguys" ? "♧" : "◈"}</b>
+                    <b>{sets[pack.setId].art.symbol}</b>
                     <h2>{SETS[pack.setId]}</h2>
                     <small>PACK #{pack.serialNumber}</small>
                     <strong>Open pack →</strong>

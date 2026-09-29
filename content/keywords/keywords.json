@@ -1,0 +1,10 @@
+[
+  {
+    "id": "MYCELIUM_NETWORK",
+    "name": "Mycelium Network",
+    "description": "+1 health while another friendly creature with Mycelium Network is on the battlefield.",
+    "implemented": true,
+    "rulesNotes": "Put this keyword on a CREATURE. It does not stack with itself. An attached artifact or augmentation can also grant it using grant_ability. Haste and other keywords are not implemented.",
+    "parameters": "None."
+  }
+]
