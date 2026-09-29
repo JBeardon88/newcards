@@ -16,7 +16,7 @@ Commands cover playing, targeted effects, equipment, attackers, blockers, discar
 
 The deterministic PRNG is serializable Mulberry32, used for packs, shuffles and auto-building. The simple AI is deterministic and does not need random choices. Match events use stable offsets from the supplied start time, so replay does not consult the clock. Command and event histories are persisted with the match. Mint UUIDs, mint timestamps, and settlement timestamps are supplied outside rule processing.
 
-`src/engine/ai.ts` is a `DecisionSource`: it reads its legal state and returns a command. The UI schedules one AI decision at a time. It neither creates free cards nor bypasses the engine. It does not consult the opposing hand or deck when making decisions.
+`src/engine/ai.ts` is a `DecisionSource`: it reads its legal state and returns a command. `AiTurn` owns presentation-only approval and pacing in the Play screen. It previews an immutable engine result, then submits exactly one approved command; auto-approval uses a cancellable timer. Unmounting cancels playback. Human priority is never bypassed. The UI schedules one AI decision at a time. It neither creates free cards nor bypasses the engine. It does not consult the opposing hand or deck when making decisions.
 
 ## Settlement transaction
 

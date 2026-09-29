@@ -852,3 +852,435 @@ textarea {
     gap: 14px;
   }
 }
+/* The match is a viewport-sized table. Crowded lanes scroll internally, never
+   pushing the opposing battlefield or the hand off the table. Below 1000×650,
+   retain readable controls and allow the document to scroll instead of clipping. */
+.playing {
+  min-width: 1000px;
+  min-height: 650px;
+  height: 100dvh;
+  grid-template-columns: 150px minmax(0, 1fr);
+}
+.playing > aside {
+  height: 100%;
+  min-height: 650px;
+  padding: 20px 12px;
+}
+.playing .brand {
+  font-size: 30px;
+  gap: 8px;
+}
+.playing .brand span {
+  font-size: 11px;
+}
+.playing main {
+  height: 100%;
+  min-height: 650px;
+  max-width: none;
+  padding: 0 14px 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+}
+.playing main > header {
+  flex: 0 0 40px;
+  padding: 12px 0;
+  font-size: 9px;
+}
+.playing main > footer,
+.playing main > .notice {
+  display: none;
+}
+.playing main > .error {
+  flex: 0 0 auto;
+  margin: 4px 0;
+  padding: 5px;
+}
+.match-screen {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  grid-template-rows: 38px minmax(0, 1fr) minmax(0, 1fr) clamp(
+      130px,
+      22vh,
+      190px
+    );
+  gap: 8px;
+}
+.match-top {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.match-top strong {
+  color: #dfc28e;
+  font-size: 15px;
+}
+.match-top small {
+  margin-left: 15px;
+}
+.board-hint {
+  color: #91a6a8;
+  font-size: 10px;
+}
+.match-screen > .arena {
+  grid-column: 1;
+  margin: 0;
+  padding: 8px;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+.match-screen .player-bar {
+  flex: 0 0 28px;
+  padding: 0 0 4px;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+.match-screen .player-bar h2 {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.match-screen .player-bar b {
+  font-size: 18px;
+  white-space: nowrap;
+}
+.match-screen .player-bar > span {
+  font-size: 9px;
+  white-space: nowrap;
+  padding-right: 65px;
+}
+.match-screen .battle-lanes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+.match-screen .creature-lane,
+.match-screen .environs > div {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.match-screen .environs {
+  gap: 5px;
+  min-height: 0;
+}
+.match-screen h3 {
+  margin: 0 0 4px;
+  font-size: 9px;
+  letter-spacing: 0.7px;
+}
+.match-screen .card-row {
+  flex: 1;
+  min-height: 0;
+  padding: 3px 3px 7px;
+  gap: 6px;
+  align-items: stretch;
+}
+.match-screen .arena .card {
+  flex: 1 0 86px;
+  width: auto;
+  min-width: 86px;
+  max-width: 155px;
+  min-height: 0;
+  padding: 5px;
+  border-radius: 5px;
+}
+.match-screen .arena .card .art {
+  display: none;
+}
+.match-screen .arena .card .card-top {
+  min-height: 26px;
+}
+.match-screen .arena .card .card-top strong {
+  font-size: 10px;
+}
+.match-screen .arena .card .cost {
+  min-width: 19px;
+  height: 19px;
+  font-size: 11px;
+}
+.match-screen .arena .card .card-type {
+  font-size: 7px;
+  padding: 3px 0;
+}
+.match-screen .arena .card .card-type > span {
+  display: none;
+}
+.match-screen .arena .card .rules {
+  font-size: 10px;
+  overflow: hidden;
+  margin: 4px 0;
+  min-height: 0;
+}
+.match-screen .arena .card .card-bottom {
+  margin-top: auto;
+  padding-top: 3px;
+}
+.match-screen .arena .card .card-bottom small {
+  font-size: 7px;
+}
+.match-screen .arena .card .card-flags {
+  font-size: 7px;
+}
+.match-screen .empty {
+  margin: auto 0;
+  padding: 5px;
+  font-size: 10px;
+}
+.match-screen .graveyard-button {
+  position: absolute;
+  right: 5px;
+  top: 6px;
+  font-size: 9px;
+  padding: 4px;
+  margin: 0;
+}
+.match-hand {
+  grid-column: 1;
+  grid-row: 4;
+  margin: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.match-hand h2 {
+  font-size: 13px;
+  margin: 2px 0 4px;
+}
+.match-hand .card {
+  min-width: 128px;
+  width: 145px;
+  min-height: 0;
+  padding: 6px;
+  flex: 1 0 128px;
+  max-width: 180px;
+}
+.match-hand .card .art {
+  display: none;
+}
+.match-hand .card-top {
+  min-height: 24px;
+}
+.match-hand .card-top strong {
+  font-size: 11px;
+}
+.match-hand .card .rules {
+  font-size: 11px;
+  margin: 5px 0;
+  overflow: hidden;
+}
+.match-hand .card-flags {
+  display: none;
+}
+.match-sidebar {
+  grid-column: 2;
+  grid-row: 2/5;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 3px;
+}
+.match-sidebar .decision-panel {
+  margin: 8px 0;
+  padding: 10px;
+}
+.match-sidebar h2 {
+  font-size: 15px;
+  margin: 4px 0 8px;
+}
+.match-sidebar p {
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 7px 0;
+}
+.match-sidebar button {
+  font-size: 11px;
+  padding: 8px 10px;
+}
+.match-sidebar label {
+  font-size: 11px;
+  margin: 4px 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.match-sidebar select {
+  padding: 7px;
+  font-size: 11px;
+  width: 100%;
+}
+.match-sidebar .actions {
+  margin: 6px 0;
+  gap: 3px;
+}
+.match-sidebar details {
+  margin: 8px 0;
+  padding: 10px;
+  font-size: 11px;
+}
+.match-sidebar .game-log {
+  max-height: 130px;
+  font-size: 10px;
+  margin: 5px 0;
+}
+.ai-tracker {
+  background: #1c2d34;
+  border: 1px solid #465d61;
+  border-radius: 8px;
+  padding: 10px;
+}
+.ai-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+.ai-settings label {
+  width: 100%;
+  align-items: center;
+}
+.ai-settings select {
+  flex: 1;
+  width: auto;
+}
+.ai-prompt {
+  background: #304136;
+  border: 1px solid #ae9569;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 8px;
+  box-shadow: 0 8px 20px #0004;
+}
+.ai-prompt .eyebrow {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.ai-prompt h2 {
+  font-size: 14px;
+}
+.ai-prompt ul,
+.last-action ul {
+  padding-left: 15px;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 7px 0;
+}
+.last-action {
+  margin-top: 12px;
+  color: #bdcec4;
+}
+.last-action h3 {
+  color: #d7bd88;
+}
+@media (min-width: 1600px) {
+  .match-screen {
+    grid-template-columns: minmax(0, 1fr) 310px;
+  }
+  .match-screen .arena .card {
+    min-width: 110px;
+  }
+}
+@media (max-width: 1000px) {
+  .playing {
+    display: grid;
+  }
+  .playing > aside {
+    display: flex;
+    position: relative;
+  }
+  .playing nav {
+    display: grid;
+    overflow: visible;
+  }
+  .playing nav button {
+    padding: 10px;
+  }
+  .playing .tagline,
+  .playing .local-badge {
+    display: block;
+  }
+}
+/* Reflow battlefield cards within each lane before reducing their content.
+   This keeps ordinary populated boards visible at the minimum viewport too. */
+.match-screen .arena .card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+.match-screen .arena .card {
+  container-type: size;
+  container-name: battlefield-card;
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+@container battlefield-card (max-height: 110px) {
+  .rules,
+  .card-type {
+    display: none;
+  }
+  .card-top {
+    flex: 1;
+  }
+}
+@container battlefield-card (max-height: 75px) {
+  .card-flags,
+  .card-bottom small {
+    display: none;
+  }
+  .card-top {
+    min-height: 0 !important;
+  }
+  .card-bottom {
+    border: 0;
+    padding: 0 !important;
+  }
+}
+.match-sidebar .last-action ul {
+  max-height: 115px;
+  overflow: auto;
+}
+.match-screen .player-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  flex-basis: 40px;
+  row-gap: 1px;
+}
+.match-screen .player-bar > span {
+  grid-column: 1/-1;
+  grid-row: 2;
+  padding-right: 0;
+}
+.match-screen .graveyard-button {
+  position: static;
+  grid-column: 4;
+  grid-row: 1;
+}
+.match-hand .card-row {
+  display: grid;
+}
+.match-hand .card {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  overflow: hidden;
+  container-type: inline-size;
+}
+@container (max-width: 110px) {
+  .card-type > span {
+    display: none;
+  }
+}

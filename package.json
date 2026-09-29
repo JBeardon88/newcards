@@ -10,7 +10,8 @@
     "test:watch": "vitest",
     "preview": "vite preview --host 0.0.0.0",
     "format": "prettier --write src tests *.md *.json index.html",
-    "format:check": "prettier --check src tests *.md *.json index.html"
+    "format:check": "prettier --check src tests *.md *.json index.html",
+    "test:ui": "node scripts/check-play-ui.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "playwright": "^1.63.0",
     "prettier": "^3.9.9",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",

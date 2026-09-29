@@ -32,6 +32,21 @@ npm run preview   # serve built application
 6. At match end, review **Settlement**, select up to one eligible enemy artifact if you won, then **Commit settlement**.
 7. Return to collection: terminal cards remain inspectable, captures have new owners, and every copy has an appended history. Rebuild decks containing lost or captured copies.
 
+## Play layout and opponent pacing
+
+The play table fits the browser viewport at **1000 × 650 CSS pixels or larger**. Both battlefields and your hand remain visible; battlefield cards wrap into compact tiles, with full rules available on hover or in the selected-card panel. Larger screens show more detail. Exceptionally large hands may scroll sideways. Below the minimum size, the page can scroll to preserve readable controls. Graveyards open in an overlay; the decision/log column scrolls independently.
+
+The opponent **waits for your approval by default**. Its action prompt previews what the next command will do and lists what just happened. Click **Approve next action** to advance one decision, or **Approve all (paced)** for one command every 1, 1.8 (default), or 3 seconds. **Pause approvals** cancels the upcoming automatic action. Human target/blocking decisions are never auto-approved. Leaving Play pauses the AI; returning or refreshing defaults to manual approval without losing match progress.
+
+Browser regression checks (optional; the ordinary engine tests need no browser):
+
+```sh
+npx playwright install chromium
+npm run test:ui
+```
+
+These check viewport fit, manual approval, paced playback, pause, navigation, refresh, human blocking and graveyard inspection. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an existing Chromium executable.
+
 ## Rules implemented
 
 - 20 starting life, 30-card decks, maximum two copies per definition.

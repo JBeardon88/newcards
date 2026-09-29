@@ -83,13 +83,15 @@ export function App() {
   };
   const run = (fn: (p: Profile) => void) => {
     try {
-      if (!profile) return;
+      if (!profile) return false;
       const next = structuredClone(profile);
       fn(next);
       commit(next);
       setError("");
+      return true;
     } catch (e) {
       setError(String(e));
+      return false;
     }
   };
   const send = (command: GameCommand) =>
@@ -100,19 +102,6 @@ export function App() {
       p.activeMatch = result.state;
       if (result.state.status === "FINISHED") setScreen("Settlement");
     });
-  useEffect(() => {
-    if (
-      !profile?.activeMatch ||
-      profile.activeMatch.status !== "ACTIVE" ||
-      actor(profile.activeMatch) !== "ai"
-    )
-      return;
-    const timer = setTimeout(
-      () => send(aiController.choose(profile.activeMatch!)),
-      250,
-    );
-    return () => clearTimeout(timer);
-  }, [profile]);
   useEffect(() => {
     const listener = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {
@@ -229,7 +218,9 @@ export function App() {
   }, {});
   const losses = p.activeMatch ? settlementPreview(p.activeMatch) : undefined;
   return (
-    <div className="app">
+    <div
+      className={`app ${screen === "Play" && p.activeMatch?.status === "ACTIVE" ? "playing" : ""}`}
+    >
       <aside>
         <a
           className="brand"

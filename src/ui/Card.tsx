@@ -25,6 +25,7 @@ export function Card({
       : { attack: d.attack, health: d.health };
   return (
     <button
+      title={`${d.name} · ${d.cost} energy · ${d.rulesText}`}
       disabled={disabled}
       onClick={onClick}
       className={`card ${d.setId} ${selected ? "selected" : ""} ${matchCard?.tapped ? "tapped" : ""}`}
