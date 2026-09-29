@@ -1,0 +1,297 @@
+[
+    {
+        "name": "Fungal Scout",
+        "attack": 1,
+        "defense": 1,
+        "cost": 1,
+        "description": "",
+        "card_type": "creature",
+        "effects": [],
+        "flavor_text": "First to sprout, first to spread."
+    },
+    {
+        "name": "Mycelium Guardian",
+        "attack": 2,
+        "defense": 2,
+        "cost": 3,
+        "description": "Has Mycelium Network.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "mycelium_network", "trigger": "constant"}
+        ],
+        "flavor_text": "Connected by unseen threads."
+    },
+    {
+        "name": "Sporeling Swarm",
+        "attack": 1,
+        "defense": 1,
+        "cost": 2,
+        "description": "",
+        "card_type": "creature",
+        "effects": [],
+        "flavor_text": "Tiny but many."
+    },
+    {
+        "name": "Biotech Shroom",
+        "attack": 3,
+        "defense": 2,
+        "cost": 4,
+        "description": "",
+        "card_type": "creature",
+        "effects": [],
+        "flavor_text": "Engineered for perfection."
+    },
+    {
+        "name": "Elder Fungus",
+        "attack": 4,
+        "defense": 4,
+        "cost": 5,
+        "description": "On summon, draw a card.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "draw_cards", "value": 1, "trigger": "on_summon"}
+        ],
+        "flavor_text": "Wisdom grown over centuries."
+    },
+    {
+        "name": "Spore Slinger",
+        "attack": 1,
+        "defense": 1,
+        "cost": 3,
+        "description": "On summon, deal 1 damage to an enemy creature.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "deal_damage", "value": 1, "trigger": "on_summon", "target": "enemy_creature"}
+        ],
+        "flavor_text": "A shot of spores keeps foes at bay."
+    },
+    {
+        "name": "Cluster Cap",
+        "attack": 2,
+        "defense": 2,
+        "cost": 3,
+        "description": "",
+        "card_type": "creature",
+        "effects": [],
+        "flavor_text": "Strength in numbers, even in a single stalk."
+    },
+    {
+        "name": "Spore Mother",
+        "attack": 2,
+        "defense": 3,
+        "cost": 4,
+        "description": "On death, summon two 1/1 Sporelings.",
+        "card_type": "creature",
+        "effects": [
+            {
+                "type": "summon_token",
+                "value": 2,
+                "token_name": "Sporeling",
+                "attack": 1,
+                "defense": 1,
+                "trigger": "on_death"
+            }
+        ],
+        "flavor_text": "From decay sprouts new life."
+    },
+    {
+        "name": "Fungal Growth",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Enchanted creature gains +1/+1 at the beginning of your upkeep.",
+        "card_type": "enchantment",
+        "effects": [
+            {"type": "gain_attack", "value": 1, "trigger": "on_upkeep", "target": "enchanted_creature"},
+            {"type": "gain_defense", "value": 1, "trigger": "on_upkeep", "target": "enchanted_creature"}
+        ],
+        "flavor_text": "Watch as it blooms into something more."
+    },
+    {
+        "name": "Mycelium Armor",
+        "attack": 0,
+        "defense": 0,
+        "cost": 3,
+        "description": "Enchanted creature gains Mycelium Network.",
+        "card_type": "enchantment",
+        "effects": [
+            {"type": "grant_ability", "value": "mycelium_network", "target": "enchanted_creature"}
+        ],
+        "flavor_text": "Woven threads of life enhance its defense."
+    },
+    {
+        "name": "Symbiotic Link",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Whenever a creature you control attacks, it gains +1 attack until end of turn.",
+        "card_type": "enchantment",
+        "effects": [
+            {
+                "type": "gain_attack",
+                "value": 1,
+                "trigger": "on_attack",
+                "duration": "end_of_turn",
+                "target": "attacking_creature"
+            }
+        ],
+        "flavor_text": "They thrive together, or not at all."
+    },
+    {
+        "name": "Resilient Growth",
+        "attack": 0,
+        "defense": 0,
+        "cost": 3,
+        "description": "At the beginning of your upkeep, all creatures you control gain +1 defense.",
+        "card_type": "enchantment",
+        "effects": [
+            {"type": "gain_defense", "value": 1, "trigger": "on_upkeep", "target": "all_creatures_you_control"}
+        ],
+        "flavor_text": "The longer they stand, the stronger they become."
+    },
+    {
+        "name": "Energy Bloom",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Increase your energy regeneration by 1.",
+        "card_type": "enchantment",
+        "effects": [
+            {"type": "increase_energy_regen", "value": 1, "trigger": "constant"}
+        ],
+        "flavor_text": "Their roots tap into endless reserves."
+    },
+    {
+        "name": "Networked Resilience",
+        "attack": 0,
+        "defense": 0,
+        "cost": 4,
+        "description": "Creatures you control with Mycelium Network gain +1 defense.",
+        "card_type": "enchantment",
+        "effects": [
+            {
+                "type": "gain_defense",
+                "value": 1,
+                "trigger": "constant",
+                "condition": "mycelium_network",
+                "target": "creatures_you_control_with_mycelium_network"
+            }
+        ],
+        "flavor_text": "The network strengthens its own."
+    },
+    {
+        "name": "Spore Burst",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Deal 2 damage to target enemy creature.",
+        "card_type": "spell",
+        "effects": [
+            {"type": "deal_damage", "value": 2, "trigger": "on_cast", "target": "enemy_creature"}
+        ],
+        "flavor_text": "A cloud of spores can be deadly."
+    },
+    {
+        "name": "Mushroom Insight",
+        "cost": 2,
+        "attack": 0,
+        "defense": 0,
+        "description": "Draw two cards.",
+        "card_type": "spell",
+        "effects": [
+            {"type": "draw_cards", "value": 2, "trigger": "on_cast"}
+        ],
+        "flavor_text": "Their knowledge spans beneath the forest."
+    },
+    {
+        "name": "Decay Touch",
+        "cost": 2,
+        "attack": 0,
+        "defense": 0,
+        "description": "Destroy target equipment.",
+        "card_type": "spell",
+        "effects": [
+            {"type": "destroy_equipment", "trigger": "on_cast", "target": "equipment"}
+        ],
+        "flavor_text": "Metal rusts, but spores persist."
+    },
+    {
+        "name": "Spore Cloud",
+        "cost": 3,
+        "attack": 0,
+        "defense": 0,
+        "description": "All enemy creatures lose 1 attack until end of turn.",
+        "card_type": "spell",
+        "effects": [
+            {
+                "type": "lose_attack",
+                "value": 1,
+                "trigger": "on_cast",
+                "duration": "end_of_turn",
+                "target": "all_enemy_creatures"
+            }
+        ],
+        "flavor_text": "A veil of spores saps their strength."
+    },
+    {
+        "name": "Regrowth",
+        "cost": 3,
+        "attack": 0,
+        "defense": 0,
+        "description": "Return a creature from your discard pile to your hand.",
+        "card_type": "spell",
+        "effects": [
+            {"type": "return_from_discard", "trigger": "on_cast", "target": "creature", "destination": "hand"}
+        ],
+        "flavor_text": "From death, life anew."
+    },
+    {
+        "name": "Energy Infusion",
+        "cost": 1,
+        "attack": 0,
+        "defense": 0,
+        "description": "Increase your energy by 2 this turn.",
+        "card_type": "spell",
+        "effects": [
+            {"type": "increase_energy", "value": 2, "trigger": "on_cast", "duration": "this_turn"}
+        ],
+        "flavor_text": "A sudden surge fuels their growth."
+    },
+    {
+        "name": "Bioluminescent Spore Cloak",
+        "cost": 2,
+        "attack": 0,
+        "defense": 0,
+        "description": "Equipped creature gains +1 defense.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "gain_defense", "value": 1, "trigger": "constant", "target": "equipped_creature"}
+        ],
+        "flavor_text": "Glows with the light of a thousand spores."
+    },
+    {
+        "name": "Spore Injector",
+        "cost": 2,
+        "attack": 0,
+        "defense": 0,
+        "description": "Equipped creature gains +1 attack.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "gain_attack", "value": 1, "trigger": "constant", "target": "equipped_creature"}
+        ],
+        "flavor_text": "A tiny prick with deadly consequences."
+    },
+    {
+        "name": "Mycelium Staff",
+        "cost": 3,
+        "attack": 0,
+        "defense": 0,
+        "description": "Equipped creature gains Mycelium Network.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "grant_ability", "value": "mycelium_network", "target": "equipped_creature"}
+        ],
+        "flavor_text": "Channel the power of the network."
+    }
+]
+

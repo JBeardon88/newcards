@@ -1,0 +1,246 @@
+[
+    {
+        "name": "Street Hacker",
+        "attack": 1,
+        "defense": 1,
+        "cost": 1,
+        "description": "Street Soldier - Technocracy",
+        "card_type": "creature",  
+        "flavor_text": "He was just a kid, but he could break into systems like an adult, I'll tell ya that much... - Tycho, CFO Interweave Corp."
+    },
+    {
+        "name": "Neon Brawler",
+        "attack": 2,
+        "defense": 1,
+        "cost": 4,
+        "description": "Gains +1 attack when equipped with any equipment.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "conditional_gain_attack", "value": 1, "trigger": "on_equip", "condition": "equipped"}
+        ],
+        "flavor_text": "Just punch him, you pussy!"
+    },
+    {
+        "name": "Techno Scout",
+        "attack": 1,
+        "defense": 1,
+        "cost": 3,
+        "description": "When Techno Scout is summoned, you may destroy an enemy enchantment.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "destroy_enchantment", "trigger": "on_summon", "target": "enemy_enchantment"}
+        ]
+    },
+    {
+        "name": "Edgerunner Soldier",
+        "attack": 3,
+        "defense": 2,
+        "cost": 2,
+        "description": "Slippery when wet",
+        "card_type": "creature"
+    },
+    {
+        "name": "Grenadier",
+        "attack": 2,
+        "defense": 1,
+        "cost": 3,
+        "description": "When Grenadier is summoned, you may destroy 1 equipment.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "destroy_equipment", "trigger": "on_summon", "target": "enemy_equipment"}
+        ]
+    },
+    {
+        "name": "Cyborg Gunner",
+        "attack": 2,
+        "defense": 1,
+        "cost": 1,
+        "description": "Military Unit - Technocracy",
+        "card_type": "creature",
+        "flavor_text": "Their guns were built right into their hands, but they looked as human as any of us."
+    },
+    {
+        "name": "Neon Samurai",
+        "attack": 3,
+        "defense": 1,
+        "cost": 2,
+        "description": "Unit - Urban District 12",
+        "card_type": "creature",
+        "flavor_text:": "I don't talk to people like you."
+    },
+    {
+        "name": "Cybernetic Enforcer",
+        "attack": 3,
+        "defense": 3,
+        "cost": 3,
+        "description": "Military Unit - Technocracy",
+        "card_type": "creature"
+    },
+    {
+        "name": "Street Mercenary",
+        "attack": 2,
+        "defense": 1,
+        "cost": 2,
+        "description": "Aux Unit.",
+        "card_type": "creature"
+        
+    },
+    {
+        "name": "Tactical Drone",
+        "attack": 0,
+        "defense": 1,
+        "cost": 1,
+        "description": "Reduces the cost of all your equipment by 1 Energy while it's on the field.",
+        "card_type": "creature",
+        "effects": [
+            {"type": "equipment_cost_reduction", "value": 1, "trigger": "constant"}
+        ]
+    },
+    {
+        "name": "Plasma Rifle",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Equip to a creature. That creature gains +2 attack.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "gain_attack", "value": 2, "target": "creature"}
+        ]
+    },
+    {
+        "name": "Energy Blade",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Equip to a creature. That creature gains +1 attack and +1 defense.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "gain_attack", "value": 1, "target": "creature"},
+            {"type": "gain_defense", "value": 1, "target": "creature"}
+        ]
+    },
+    {
+        "name": "Holo Shield",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Equip to a creature. That creature gains +3 defense.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "gain_defense", "value": 3, "target": "creature"},
+            {"type": "gain_attack", "value": -1, "target": "creature"}
+        ]
+    },
+    {
+        "name": "Nightmare Gun",
+        "attack": 0,
+        "defense": 0,
+        "cost": 3,
+        "description": "When Nightmare Gun is equipped to a creature, deal 1 damage to any target during upkeep.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "deal_damage", "value": 1, "target": "creature", "trigger": "upkeep"}
+        ],
+        "flavor_text": "It's not a gun, it's a weapon of mass destruction."
+    },
+    {
+        "name": "Nanotech Armor",
+        "attack": 0,
+        "defense": 0,
+        "cost": 3,
+        "description": "Equip to a creature. That creature gains +1 defense and regenerates 1 health at the start of your turn.",
+        "card_type": "equipment",
+        "effects": [
+            {"type": "gain_defense", "value": 1, "target": "creature"},
+            {"type": "regenerate_health", "value": 1, "target": "creature", "trigger": "start_of_turn"}
+        ]
+    },
+    {
+        "name": "Power Grid",
+        "attack": 0,
+        "defense": 0,
+        "cost": 3,
+        "description": "At upkeep +1 Energy. When you play an equipment, draw a card.",
+        "card_type": "enchantment",
+        "effects": [
+            {"type": "increase_energy_regen", "value": 1, "trigger": "upkeep"},
+            {"type": "draw_cards", "value": 1, "trigger": "on_play_equipment"}
+        ]
+    },
+    {
+        "name": "Battery Array",
+        "attack": 0,
+        "defense": 0,
+        "cost": 1,
+        "description": "At upkeep, +1 energy.",
+        "card_type": "enchantment",
+        "effects": [
+            {"type": "increase_energy_regen", "value": 1, "trigger": "upkeep"}
+        ]
+    },
+    {
+        "name": "Data Surge",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Draw 2 cards.",
+        "card_type": "spell",
+        "effects": [
+            {
+                "type": "draw_cards",
+                "value": 2,
+                "trigger": "on_cast"
+            }
+        ],
+        "flavor_text": "Plug your brain into the machine and let go."
+    },
+    {
+        "name": "Plasma Blast",
+        "attack": 0,
+        "defense": 0,
+        "cost": 3,
+        "description": "Deal 3 damage to target creature or player.",
+        "card_type": "spell",
+        "effects": [
+            {
+                "type": "deal_damage",
+                "value": 3,
+                "trigger": "on_cast",
+                "target": "creature_or_player"
+            }
+        ],
+        "flavor_text": "A hot stream, right in your face."
+    },
+    {
+        "name": "EMP Pulse",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Destroy 1 equipment.",
+        "card_type": "spell",
+        "effects": [
+            {
+                "type": "destroy_equipment",
+                "trigger": "on_cast",
+                "target": "equipment"
+            }
+        ],
+        "flavor_text": "A powerful electromagnetic pulse that disables all electronic devices."
+    },
+    {
+        "name": "Code Erasure",
+        "attack": 0,
+        "defense": 0,
+        "cost": 2,
+        "description": "Destroy 1 enchantment.",
+        "card_type": "spell",
+        "effects": [
+            {
+                "type": "destroy_enchantment",
+                "trigger": "on_cast",
+                "target": "enchantment"
+            }
+        ],
+        "flavor_text": "Delete their code, delete their reality."
+    }
+]
