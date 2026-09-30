@@ -35,7 +35,7 @@ npm run preview   # serve built application
 
 ## Play layout and opponent pacing
 
-The play table fits the browser viewport at **1000 × 650 CSS pixels or larger**. Both battlefields and your hand remain visible; battlefield cards wrap into compact tiles, with full rules available on hover or in the selected-card panel. Larger screens show more detail. Exceptionally large hands may scroll sideways. Below the minimum size, the page can scroll to preserve readable controls. Graveyards open in an overlay; the decision/log column scrolls independently.
+The play table fits the browser viewport at **1000 × 650 CSS pixels or larger**. Both battlefields and your hand remain visible. Cards keep a compact 5:7 portrait shape and never expand to fill an empty lane. Board cards are capped at 104 pixels wide; hand cards at 116 pixels, with modest resizing for shorter screens. Crowded board lanes wrap and scroll internally; hands scroll sideways when needed. Full rules remain available on hover or in the selected-card panel. Below the minimum size, the page can scroll to preserve readable controls. Graveyards open in an overlay; the decision/log column scrolls independently.
 
 The opponent **waits for your approval by default**. Its action prompt previews what the next command will do and lists what just happened. Click **Approve next action** to advance one decision, or **Approve all (paced)** for one command every 1, 1.8 (default), or 3 seconds. **Pause approvals** cancels the upcoming automatic action. Human target/blocking decisions are never auto-approved. Leaving Play pauses the AI; returning or refreshing defaults to manual approval without losing match progress.
 

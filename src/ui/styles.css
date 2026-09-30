@@ -944,9 +944,9 @@ textarea {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 270px;
   grid-template-rows: 38px minmax(0, 1fr) minmax(0, 1fr) clamp(
-      130px,
-      22vh,
-      190px
+      150px,
+      25vh,
+      210px
     );
   gap: 8px;
 }
@@ -1073,10 +1073,11 @@ textarea {
   align-items: stretch;
 }
 .match-screen .arena .card {
-  flex: 1 0 86px;
-  width: auto;
-  min-width: 86px;
-  max-width: 155px;
+  flex: 0 0 auto;
+  width: clamp(70px, calc((100cqh - 12px) * 5 / 7), 104px);
+  aspect-ratio: 5 / 7;
+  min-width: 0;
+  max-width: 104px;
   min-height: 0;
   padding: 5px;
   border-radius: 5px;
@@ -1144,23 +1145,31 @@ textarea {
   margin: 2px 0 4px;
 }
 .match-hand .card {
-  min-width: 128px;
-  width: 145px;
+  width: clamp(80px, calc((100cqh - 12px) * 5 / 7), 116px);
+  aspect-ratio: 5 / 7;
+  min-width: 0;
   min-height: 0;
   padding: 6px;
-  flex: 1 0 128px;
-  max-width: 180px;
+  flex: 0 0 auto;
+  max-width: 116px;
 }
 .match-hand .card .art {
   display: none;
 }
 .match-hand .card-top {
   min-height: 24px;
+  gap: 4px;
+}
+.match-hand .cost {
+  min-width: 21px;
+  height: 21px;
+  font-size: 12px;
 }
 .match-hand .card-top strong {
   font-size: 11px;
 }
 .match-hand .card .rules {
+  min-height: 0;
   font-size: 11px;
   margin: 5px 0;
   overflow: hidden;
@@ -1271,9 +1280,6 @@ textarea {
   .match-screen {
     grid-template-columns: minmax(0, 1fr) 310px;
   }
-  .match-screen .arena .card {
-    min-width: 110px;
-  }
 }
 @media (max-width: 1000px) {
   .playing {
@@ -1295,30 +1301,34 @@ textarea {
     display: block;
   }
 }
-/* Reflow battlefield cards within each lane before reducing their content.
-   This keeps ordinary populated boards visible at the minimum viewport too. */
+/* Cards retain portrait proportions. Empty space belongs to the lane, not the
+   card; crowded lanes scroll rather than stretching or crushing their contents. */
 .match-screen .arena .card-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
-  grid-auto-rows: minmax(0, 1fr);
-  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+  overflow: auto;
+  scrollbar-width: thin;
+  container-type: size;
 }
 .match-screen .arena .card {
   container-type: size;
   container-name: battlefield-card;
-  min-width: 0;
-  max-width: none;
-  width: 100%;
-  height: 100%;
+  height: auto;
+  overflow: hidden;
+}
+.match-screen .card-top strong {
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
 }
 @container battlefield-card (max-height: 110px) {
   .rules,
   .card-type {
     display: none;
-  }
-  .card-top {
-    flex: 1;
   }
 }
 @container battlefield-card (max-height: 75px) {
@@ -1355,12 +1365,15 @@ textarea {
   grid-row: 1;
 }
 .match-hand .card-row {
-  display: grid;
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  container-type: size;
 }
 .match-hand .card {
-  width: 100%;
-  min-width: 0;
-  max-width: none;
+  height: auto;
   overflow: hidden;
   container-type: inline-size;
 }

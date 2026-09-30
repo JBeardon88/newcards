@@ -536,12 +536,7 @@ export function Match({
         <h2>
           Your hand <small>{zone(s, "human", "hand").length} cards</small>
         </h2>
-        <div
-          className="card-row"
-          style={{
-            gridTemplateColumns: `repeat(${Math.max(1, zone(s, "human", "hand").length)}, minmax(64px, 1fr))`,
-          }}
-        >
+        <div className="card-row">
           {zone(s, "human", "hand").map((c) =>
             render(
               c,

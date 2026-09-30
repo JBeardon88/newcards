@@ -118,28 +118,40 @@ try {
         r.top >= 0 && r.bottom <= height && r.left >= 0 && r.right <= width,
         "Battlefields and hand must be in view",
       );
-    const clipped = await page.evaluate(() =>
-      [
-        ...document.querySelectorAll(".arena .card-row, .match-hand .card-row"),
-      ].flatMap((row) => {
-        const bounds = row.getBoundingClientRect();
-        return [...row.querySelectorAll(".card")]
-          .filter((card) => {
-            const r = card.getBoundingClientRect();
-            return (
-              r.left < bounds.left - 1 ||
-              r.right > bounds.right + 1 ||
-              r.top < bounds.top - 1 ||
-              r.bottom > bounds.bottom + 1
+    const cardLayout = await page.evaluate(() => {
+      const failures = [];
+      for (const row of document.querySelectorAll(
+        ".arena .card-row, .match-hand .card-row",
+      )) {
+        for (const card of row.querySelectorAll(".card")) {
+          card.scrollIntoView({ block: "nearest", inline: "nearest" });
+          const bounds = row.getBoundingClientRect(),
+            r = card.getBoundingClientRect();
+          if (Math.abs(r.height / r.width - 1.4) > 0.025 || r.width > 116.5)
+            failures.push(
+              "Card lost its capped portrait shape: " +
+                card.getAttribute("aria-label"),
             );
-          })
-          .map((card) => card.getAttribute("aria-label"));
-      }),
-    );
+          if (
+            r.left < bounds.left - 1 ||
+            r.right > bounds.right + 1 ||
+            r.top < bounds.top - 1 ||
+            r.bottom > bounds.bottom + 1
+          )
+            failures.push(
+              "Card cannot be fully reached by scrolling: " +
+                card.getAttribute("aria-label"),
+            );
+        }
+        row.scrollTop = 0;
+        row.scrollLeft = 0;
+      }
+      return failures;
+    });
     assert.deepEqual(
-      clipped,
+      cardLayout,
       [],
-      "Normal populated board and seven-card hand must not require scrolling",
+      "Crowded cards stay portrait-sized and reachable within their lanes",
     );
     console.log(`Board fits ${width} × ${height}`);
   }
