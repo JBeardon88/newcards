@@ -442,8 +442,28 @@ header {
   box-shadow: 0 0 22px #ebbc6144;
 }
 .card.tapped {
-  border-style: dashed;
-  opacity: 0.78;
+  border-color: #d7655a;
+  animation: tapped-glow 2.4s ease-in-out infinite alternate;
+}
+@keyframes tapped-glow {
+  from {
+    box-shadow:
+      0 0 5px #e3584960,
+      inset 0 0 9px #ce443125;
+  }
+  to {
+    box-shadow:
+      0 0 13px #e35849aa,
+      inset 0 0 14px #ce44314a;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card.tapped {
+    animation: none;
+    box-shadow:
+      0 0 9px #e3584980,
+      inset 0 0 9px #ce443135;
+  }
 }
 .card-top {
   display: flex;
@@ -555,6 +575,50 @@ header {
   flex-wrap: wrap;
   align-items: center;
   margin: 20px 0;
+}
+.deck-statistics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.deck-statistics > div {
+  padding: 14px;
+  border: 1px solid #425852;
+  border-radius: 8px;
+  background: #172a27;
+}
+.deck-statistics dt {
+  font-size: 12px;
+  color: #b8cbc1;
+}
+.deck-statistics dd {
+  margin: 6px 0 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e7c989;
+}
+.deck-summary h2 small {
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 12px;
+}
+.saved-deck {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  min-width: 180px;
+}
+.saved-deck[aria-pressed="true"] {
+  border-color: #edc57c;
+  background: #344036;
+  box-shadow: inset 0 0 0 1px #edc57c55;
+}
+@media (max-width: 650px) {
+  .deck-statistics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .filters input {
   flex: 1;
@@ -1317,6 +1381,52 @@ textarea {
   container-name: battlefield-card;
   height: auto;
   overflow: hidden;
+}
+.creature-stack {
+  --stack-card-width: clamp(
+    60px,
+    calc((100cqh - 12px - var(--attachments) * 24px) * 5 / 7),
+    104px
+  );
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 var(--stack-card-width);
+  width: var(--stack-card-width);
+  height: calc(var(--stack-card-width) * 7 / 5 + var(--attachments) * 24px);
+  margin-right: 4px;
+}
+.match-screen .creature-stack > .card {
+  width: 100%;
+  position: relative;
+  z-index: calc(var(--attachments) + 1);
+}
+.stack-attachment {
+  position: absolute;
+  top: calc(var(--stack-index) * 24px);
+  left: 4px;
+  width: 100%;
+  z-index: calc(var(--attachments) - var(--stack-index) + 1);
+}
+.match-screen .stack-attachment .card {
+  width: 100%;
+  border-color: #aa9868;
+}
+.match-screen .stack-attachment .card > :not(.card-top) {
+  display: none;
+}
+.match-screen .stack-attachment .card .card-top {
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+  right: 5px;
+  min-height: 17px;
+}
+.match-screen .stack-attachment .card .card-top strong {
+  font-size: 8px;
+  line-height: 1.05;
+}
+.match-screen .stack-attachment .card .cost {
+  display: none;
 }
 .match-screen .card-top strong {
   overflow-wrap: anywhere;

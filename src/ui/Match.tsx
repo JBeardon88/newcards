@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type DragEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type DragEvent,
+  type CSSProperties,
+} from "react";
+import { RULES } from "../data/config";
 import type {
   GameCommand,
   GameState,
@@ -56,8 +63,25 @@ export function Match({
     mine && !s.pending.length && (s.phase === "MAIN" || s.phase === "MAIN2");
   const choice = selected ? s.cards[selected] : undefined;
   const options = choice ? playTargets(s, choice) : [];
-  const dragTargets =
-    dragging && s.cards[dragging] ? playTargets(s, s.cards[dragging]) : [];
+  const draggedCard = dragging ? s.cards[dragging] : undefined;
+  const isDeployedArtifact = (c: MatchCard) =>
+    c.zone === "battlefield" && definition(c).cardType === "ARTIFACT";
+  const dragTargets = draggedCard
+    ? isDeployedArtifact(draggedCard)
+      ? creatures(s, "human")
+          .filter((c) => c.id !== draggedCard.attachedTo)
+          .map((c) => c.id)
+      : playTargets(s, draggedCard)
+    : [];
+  const attachments = (c: MatchCard) =>
+    zone(s, c.owner, "battlefield").filter(
+      (a) => a.attachedTo === c.id && definition(a).cardType === "ARTIFACT",
+    );
+  const stacked = (c: MatchCard) =>
+    definition(c).cardType === "ARTIFACT" &&
+    !!c.attachedTo &&
+    s.cards[c.attachedTo]?.zone === "battlefield" &&
+    definition(s.cards[c.attachedTo]).cardType === "CREATURE";
   const name = (id: string) =>
     s.cards[id]
       ? `${definition(s.cards[id]).name} #${profile.instances[id]?.serialNumber ?? "token"}`
@@ -95,8 +119,14 @@ export function Match({
         "Drop cards onto the board or a highlighted target to play them.",
       );
     const c = s.cards[id];
-    if (!c || c.owner !== "human" || c.zone !== "hand")
-      return rejectDrop("That card is no longer in your hand.");
+    if (
+      !c ||
+      c.owner !== "human" ||
+      (c.zone !== "hand" && !isDeployedArtifact(c))
+    )
+      return rejectDrop(
+        "That card is no longer in your hand or artifact area.",
+      );
     if (s.status !== "ACTIVE")
       return rejectDrop("This match has already finished.");
     if (!mine) return rejectDrop("Wait for your turn before playing a card.");
@@ -108,14 +138,31 @@ export function Match({
       return rejectDrop(
         "Cards can only be played during a main phase. Continue to your next main phase first.",
       );
+    const targetElement = (event.target as Element).closest<HTMLElement>(
+      "[data-drop-target]",
+    );
+    if (isDeployedArtifact(c)) {
+      const bearer =
+        (event.target as Element).closest<HTMLElement>("[data-creature-id]")
+          ?.dataset.creatureId ?? targetElement?.dataset.dropTarget;
+      if (!bearer)
+        return rejectDrop(
+          "Drop the artifact onto one of your creatures to attach it.",
+        );
+      submit({
+        actor: "human",
+        type: "EQUIP_ARTIFACT",
+        cardId: id,
+        targetId: bearer,
+      });
+      return;
+    }
     if (s.players.human.energy < cost(s, c))
       return rejectDrop(
         `${definition(c).name} costs ${cost(s, c)} energy. You have ${s.players.human.energy}.`,
       );
     const targets = playTargets(s, c);
-    const targetId = (event.target as Element).closest<HTMLElement>(
-      "[data-drop-target]",
-    )?.dataset.dropTarget;
+    const targetId = targetElement?.dataset.dropTarget;
     if (targets.length) {
       if (targetId) {
         if (!targets.includes(targetId))
@@ -145,7 +192,7 @@ export function Match({
       dragging={dragging === c.id}
       dropTarget={!!dragging && main && dragTargets.includes(c.id)}
       onDragStart={
-        c.owner === "human" && c.zone === "hand"
+        c.owner === "human" && (c.zone === "hand" || isDeployedArtifact(c))
           ? (event) => {
               event.dataTransfer.effectAllowed = "move";
               event.dataTransfer.setData(CARD_DRAG_TYPE, c.id);
@@ -178,8 +225,10 @@ export function Match({
         </div>
         <span className="board-hint">
           {dragging
-            ? "Drop on your board to play · Highlighted cards and players are legal targets"
-            : "Drag from your hand to play · Or click to select and inspect"}
+            ? isDeployedArtifact(draggedCard!)
+              ? `Drop on your creature to attach · ${RULES.equipCost} energy`
+              : "Drop on your board to play · Highlighted cards and players are legal targets"
+            : "Drag to play or attach · Click stacked artifacts to inspect · Red glow = tapped"}
         </span>
       </div>
       {(["ai", "human"] as const).map((o) => (
@@ -218,26 +267,53 @@ export function Match({
             <div className="creature-lane">
               <h3>Creatures</h3>
               <div className="card-row">
-                {creatures(s, o).map((c) =>
-                  render(
-                    c,
-                    () => {
-                      if (
-                        o === "human" &&
-                        mine &&
-                        s.phase === "ATTACK" &&
-                        availableAttackers(s).includes(c.id)
-                      )
-                        setAttackers((a) =>
-                          a.includes(c.id)
-                            ? a.filter((id) => id !== c.id)
-                            : [...a, c.id],
-                        );
-                      else inspect(c.id);
-                    },
-                    attackers.includes(c.id),
-                  ),
-                )}
+                {creatures(s, o).map((c) => (
+                  <div
+                    className="creature-stack"
+                    key={c.id}
+                    data-creature-id={c.id}
+                    style={
+                      {
+                        "--attachments": attachments(c).length,
+                      } as CSSProperties
+                    }
+                  >
+                    {attachments(c).map((a, index) => (
+                      <div
+                        className="stack-attachment"
+                        key={a.id}
+                        style={{ "--stack-index": index + 1 } as CSSProperties}
+                      >
+                        {render(a, () => {
+                          if (main && a.owner === "human") {
+                            setEquip(a.id);
+                            setSelected(undefined);
+                            setTarget("");
+                          }
+                          inspect(a.id);
+                        })}
+                      </div>
+                    ))}
+                    {render(
+                      c,
+                      () => {
+                        if (
+                          o === "human" &&
+                          mine &&
+                          s.phase === "ATTACK" &&
+                          availableAttackers(s).includes(c.id)
+                        )
+                          setAttackers((a) =>
+                            a.includes(c.id)
+                              ? a.filter((id) => id !== c.id)
+                              : [...a, c.id],
+                          );
+                        else inspect(c.id);
+                      },
+                      attackers.includes(c.id),
+                    )}
+                  </div>
+                ))}
                 {!creatures(s, o).length && (
                   <p className="empty">No creatures deployed</p>
                 )}
@@ -249,7 +325,9 @@ export function Match({
                   <h3>{type === "ARTIFACT" ? "Artifacts" : "Augmentations"}</h3>
                   <div className="card-row">
                     {zone(s, o, "battlefield")
-                      .filter((c) => definition(c).cardType === type)
+                      .filter(
+                        (c) => definition(c).cardType === type && !stacked(c),
+                      )
                       .map((c) =>
                         render(
                           c,
@@ -278,7 +356,9 @@ export function Match({
               <h2>Your main phase</h2>
               <p>
                 Drag a card from your hand onto the board, or click it to choose
-                a play. Click a deployed artifact to attach it.
+                a play. Drag a deployed artifact onto your creature to attach it
+                for {RULES.equipCost} energy. Click an artifact tucked beneath a
+                creature to read it.
               </p>
             </>
           )}
@@ -451,7 +531,12 @@ export function Match({
               )}
               {main && equip && (
                 <>
-                  <h2>Attach {name(equip)} · 1 energy</h2>
+                  <h2>
+                    Attach {name(equip)} · {RULES.equipCost} energy
+                  </h2>
+                  <button className="secondary" onClick={() => inspect(equip)}>
+                    Inspect artifact
+                  </button>
                   <select
                     value={target}
                     onChange={(e) => setTarget(e.target.value)}
@@ -464,7 +549,9 @@ export function Match({
                     ))}
                   </select>
                   <button
-                    disabled={!target || s.players.human.energy < 1}
+                    disabled={
+                      !target || s.players.human.energy < RULES.equipCost
+                    }
                     onClick={() =>
                       submit({
                         actor: "human",

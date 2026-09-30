@@ -35,19 +35,21 @@ export function Card({
       : { attack: d.attack, health: d.health };
   return (
     <button
-      title={`${d.name} · ${d.cost} energy · ${d.rulesText}`}
+      title={`${d.name}${matchCard?.tapped ? " · Tapped" : ""}${matchCard?.attachedTo && game ? ` · Attached to ${cards[game.cards[matchCard.attachedTo].definitionId].name}` : ""} · ${d.cost} energy · ${d.rulesText}`}
       disabled={disabled}
       onClick={onClick}
       draggable={!!onDragStart}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       data-card-id={matchCard?.id}
+      data-instance-id={instance?.instanceId}
       data-drop-target={
         matchCard?.zone === "battlefield" ? matchCard.id : undefined
       }
       className={`card ${d.art} ${selected ? "selected" : ""} ${matchCard?.tapped ? "tapped" : ""} ${dragging ? "dragging" : ""} ${dropTarget ? "drop-target" : ""}`}
       aria-label={
-        label ?? `${d.name}${instance ? ` #${instance.serialNumber}` : ""}`
+        label ??
+        `${d.name}${instance ? ` #${instance.serialNumber}` : ""}${matchCard?.tapped ? " · Tapped" : ""}${matchCard?.attachedTo && game ? ` · Attached to ${cards[game.cards[matchCard.attachedTo].definitionId].name}` : ""}`
       }
     >
       <div className="card-top">

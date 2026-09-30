@@ -113,6 +113,7 @@ try {
         "Data Surge",
         "Regrowth",
         "Plasma Rifle",
+        "Energy Blade",
       ])
         ids[name] = add(name);
       ids.friend = add("Biotech Shroom", "human", "battlefield");
@@ -138,9 +139,21 @@ try {
     await hand(ids["Fungal Scout"]).waitFor();
     return ids;
   }
-  async function rejected(id, destination, message) {
+  async function artifactDrag(id, destination) {
+    const source = unit(id);
+    const inStack = await source.evaluate(
+      (el) => !!el.closest(".stack-attachment"),
+    );
+    const box = await source.boundingBox();
+    await source.dragTo(
+      destination,
+      inStack ? { sourcePosition: { x: 20, y: box.height - 10 } } : {},
+    );
+  }
+  async function rejected(id, destination, message, deployed = false) {
     const before = await saved();
-    await hand(id).dragTo(destination);
+    if (deployed) await artifactDrag(id, destination);
+    else await hand(id).dragTo(destination);
     await popup.waitFor();
     assert.match(await popup.textContent(), message);
     assert.deepEqual(
@@ -148,7 +161,7 @@ try {
       before,
       "An invalid drop must not change state, energy or persistence",
     );
-    assert.equal(await hand(id).count(), 1);
+    assert.equal(await (deployed ? unit(id) : hand(id)).count(), 1);
     await popup.getByRole("button", { name: "Got it" }).click();
     await popup.waitFor({ state: "hidden" });
   }
@@ -174,6 +187,26 @@ try {
   assert.equal(s.commands.length, 1, "A drop must submit exactly one command");
   assert.equal(s.cards[ids["Fungal Scout"]].tapped, true);
   assert.equal(s.cards[ids["Fungal Scout"]].sick, true);
+  assert.equal(
+    await unit(ids["Fungal Scout"]).evaluate(
+      (el) => getComputedStyle(el).animationName,
+    ),
+    "tapped-glow",
+  );
+  assert.equal(
+    await unit(ids["Fungal Scout"]).evaluate(
+      (el) => getComputedStyle(el).borderTopStyle,
+    ),
+    "solid",
+  );
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  assert.equal(
+    await unit(ids["Fungal Scout"]).evaluate(
+      (el) => getComputedStyle(el).animationName,
+    ),
+    "none",
+  );
+  await page.emulateMedia({ reducedMotion: "no-preference" });
 
   await rejected(ids["Data Surge"], opponent, /your side of the board/);
   await rejected(
@@ -228,6 +261,61 @@ try {
     undefined,
     "Artifact drops deploy; attaching remains its own action",
   );
+  const beforeEquip = (await state()).players.human.energy;
+  await artifactDrag(ids["Plasma Rifle"], unit(ids.friend));
+  assert.equal(
+    (await state()).cards[ids["Plasma Rifle"]].attachedTo,
+    ids.friend,
+  );
+  assert.equal((await state()).players.human.energy, beforeEquip - 1);
+  assert.equal(
+    await page
+      .locator(`.environs [data-card-id="${ids["Plasma Rifle"]}"]`)
+      .count(),
+    0,
+  );
+  const rifle = unit(ids["Plasma Rifle"]);
+  const rifleBounds = await rifle.boundingBox();
+  await rifle.click({ position: { x: 20, y: rifleBounds.height - 10 } });
+  const inspector = page.getByRole("dialog", { name: "Card provenance" });
+  await inspector.waitFor();
+  assert.match(await inspector.textContent(), /Plasma Rifle/);
+  await inspector.getByRole("button", { name: "Close ×", exact: true }).click();
+  await rejected(
+    ids["Plasma Rifle"],
+    unit(ids.enemy),
+    /Choose your creature/,
+    true,
+  );
+  await rejected(
+    ids["Plasma Rifle"],
+    unit(ids.friend),
+    /Already attached/,
+    true,
+  );
+  await artifactDrag(ids["Plasma Rifle"], unit(ids["Fungal Scout"]));
+  assert.equal(
+    (await state()).cards[ids["Plasma Rifle"]].attachedTo,
+    ids["Fungal Scout"],
+  );
+  await artifactDrag(ids["Plasma Rifle"], unit(ids.friend));
+  await hand(ids["Energy Blade"]).dragTo(board);
+  await artifactDrag(ids["Energy Blade"], unit(ids.friend));
+  assert.equal(
+    await page
+      .locator(`[data-creature-id="${ids.friend}"] .stack-attachment`)
+      .count(),
+    2,
+  );
+  const stackFits = await page
+    .locator(`[data-creature-id="${ids.friend}"]`)
+    .evaluate((el) => {
+      const stack = el.getBoundingClientRect();
+      const lane = el.parentElement.getBoundingClientRect();
+      return stack.bottom <= lane.bottom && stack.top >= lane.top;
+    });
+  assert.ok(stackFits, "Two artifact tabs should fit beneath their creature");
+  await screenshot("artifact-stack.png");
 
   await hand(ids["Data Surge"]).click();
   await page.getByRole("button", { name: "Confirm play", exact: true }).click();
@@ -247,6 +335,28 @@ try {
     ids = await fixture(options);
     await rejected(ids["Fungal Scout"], board, message);
   }
+
+  ids = await fixture();
+  await hand(ids["Plasma Rifle"]).dragTo(board);
+  await artifactDrag(ids["Plasma Rifle"], unit(ids.friend));
+  await hand(ids["Plasma Blast"]).dragTo(unit(ids.friend));
+  assert.equal((await state()).cards[ids.friend].zone, "graveyard");
+  assert.equal(
+    (await state()).cards[ids["Plasma Rifle"]].attachedTo,
+    undefined,
+  );
+  await page
+    .locator(`.environs [data-card-id="${ids["Plasma Rifle"]}"]`)
+    .waitFor();
+
+  ids = await fixture({ energy: 2 });
+  await hand(ids["Plasma Rifle"]).dragTo(board);
+  await rejected(
+    ids["Plasma Rifle"],
+    unit(ids.friend),
+    /Not enough energy/,
+    true,
+  );
 
   ids = await fixture();
   // Even a match-winning play must stay on the table if persistence fails.

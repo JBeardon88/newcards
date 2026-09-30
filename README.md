@@ -28,12 +28,16 @@ npm run preview   # serve built application
 1. Open the six starter packs: three Funguys and three Technocracy. Each contains twelve uniquely minted copies (72 human-owned cards total).
 2. Visit **Collection** and click any copy to inspect its identity and history.
 3. In **Deck builder**, select instances manually or auto-build Funguys, Technocracy, or Mixed. Save a 30-card deck with no more than two copies of a definition. Random packs do **not** guarantee enough distinct cards for a single-set deck; mint more free test packs when the builder reports insufficient cards.
-4. Click **Play AI**. Advance upkeep into main phase. Drag a hand card onto your board to play it, or onto a highlighted creature/player life total to target it. Dropping a targeted card on empty board space opens a target picker; cancel keeps it in hand. Illegal drops show a popup explaining why, without spending energy. You can also click a hand card, choose a legal target, and confirm play. Artifacts deploy first; click a deployed artifact to attach it for one energy.
+4. Click **Play AI**. Advance upkeep into main phase. Drag a hand card onto your board to play it, or onto a highlighted creature/player life total to target it. Dropping a targeted card on empty board space opens a target picker; cancel keeps it in hand. Illegal drops show a popup explaining why, without spending energy. You can also click a hand card, choose a legal target, and confirm play. Artifacts deploy first; drag a deployed artifact onto a friendly creature to attach it for one energy, or click it to choose a target.
 5. Advance to attack, select ready creatures, and confirm attackers. On defense, select one blocker per attacker and resolve combat. Continue through second main and end phase. Discard down to seven when prompted.
 6. At match end, review **Settlement**, select up to one eligible enemy artifact if you won, then **Commit settlement**.
 7. Return to collection: terminal cards remain inspectable, captures have new owners, and every copy has an appended history. Rebuild decks containing lost or captured copies.
 
 ## Play layout and opponent pacing
+
+Attached artifacts tuck underneath their creature instead of appearing in the artifact lane. Click an exposed name tab to read the full card, or drag that tab onto another friendly creature to reattach it for one energy. When the creature dies, surviving artifacts return to the artifact lane. Tapped creatures stay upright with a pulsing red glow; reduced-motion preferences use a steady glow.
+
+The **Deck builder** lists your saved decks. Select one to edit it and see its creature, spell, artifact and augmentation counts. Search and filter by set, type, rarity or status, and sort by name, energy, rarity or newest copy. Filters preserve your selection and composition totals. Unavailable cards remain counted until removed, with a warning when the deck needs rebuilding.
 
 The play table fits the browser viewport at **1000 × 650 CSS pixels or larger**. Both battlefields and your hand remain visible. Cards keep a compact 5:7 portrait shape and never expand to fill an empty lane. Board cards are capped at 104 pixels wide; hand cards at 116 pixels, with modest resizing for shorter screens. Crowded board lanes wrap and scroll internally; hands scroll sideways when needed. Full rules remain available on hover or in the selected-card panel. Below the minimum size, the page can scroll to preserve readable controls. Graveyards open in an overlay; the decision/log column scrolls independently.
 
@@ -45,9 +49,10 @@ Browser regression checks (optional; the ordinary engine tests need no browser):
 npx playwright install chromium
 npm run test:ui
 npm run test:drag
+npm run test:decks
 ```
 
-These check viewport fit, manual approval, paced playback, pause, navigation, refresh, human blocking, graveyard inspection, drag/drop targeting and invalid-play popups. Drag/drop uses desktop browser dragging; click controls remain available for keyboard and touch use. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an existing Chromium executable. Set `PLAYWRIGHT_ARTIFACT_DIR` to save screenshots from the drag/drop checks.
+These check viewport fit, manual approval, paced playback, pause, navigation, refresh, human blocking, graveyard inspection, drag/drop targeting, attachment stacks, invalid-play popups, deck filters, composition counts and saved-deck editing. Drag/drop uses desktop browser dragging; click controls remain available for keyboard and touch use. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an existing Chromium executable. Set `PLAYWRIGHT_ARTIFACT_DIR` to save screenshots from the drag/drop and deck-builder checks.
 
 ## Rules implemented
 

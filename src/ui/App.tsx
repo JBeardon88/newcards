@@ -1,3 +1,6 @@
+import { CardFilters } from "./CardFilters";
+import { DeckStatistics } from "./DeckStatistics";
+import { EMPTY_FILTERS, filterCards } from "./cardTools";
 import { useEffect, useState } from "react";
 import type {
   CardInstance,
@@ -62,13 +65,10 @@ export function App() {
   );
   const [detail, setDetail] = useState<string>();
   const [revealed, setRevealed] = useState<string[]>([]);
-  const [filter, setFilter] = useState({
-    set: "",
-    type: "",
-    rarity: "",
-    status: "",
-    name: "",
-    owner: "human",
+  const [filter, setFilter] = useState({ ...EMPTY_FILTERS, owner: "human" });
+  const [deckFilter, setDeckFilter] = useState({
+    ...EMPTY_FILTERS,
+    status: "ALIVE",
   });
   const [draft, setDraft] = useState<string[]>([]);
   const [deckName, setDeckName] = useState("My first expedition");
@@ -212,17 +212,11 @@ export function App() {
     </div>
   );
   const detailCard = detail ? p.instances[detail] : undefined;
-  const filtered = Object.values(p.instances).filter(
-    (c) =>
-      c.currentOwnerId === filter.owner &&
-      (!filter.set || c.setId === filter.set) &&
-      (!filter.type || cards[c.definitionId].cardType === filter.type) &&
-      (!filter.rarity || c.rarity === filter.rarity) &&
-      (!filter.status || c.lifecycleStatus === filter.status) &&
-      cards[c.definitionId].name
-        .toLowerCase()
-        .includes(filter.name.toLowerCase()),
+  const filtered = filterCards(
+    Object.values(p.instances).filter((c) => c.currentOwnerId === filter.owner),
+    filter,
   );
+  const deckCards = filterCards(owned, deckFilter);
   const groups = filtered.reduce<Record<string, CardInstance[]>>((acc, c) => {
     (acc[c.definitionId] ??= []).push(c);
     return acc;
@@ -452,36 +446,10 @@ export function App() {
               title="Every copy is its own object."
             />
             <div className="filters">
-              <input
-                aria-label="Search card name"
-                placeholder="Search card name…"
-                value={filter.name}
-                onChange={(e) => setFilter({ ...filter, name: e.target.value })}
+              <CardFilters
+                value={filter}
+                onChange={(next) => setFilter({ ...next, owner: filter.owner })}
               />
-              {(
-                [
-                  ["set", Object.keys(SETS)],
-                  ["type", ["CREATURE", "SPELL", "ARTIFACT", "AUGMENTATION"]],
-                  ["rarity", ["COMMON", "UNCOMMON", "RARE", "LEGENDARY"]],
-                  ["status", ["ALIVE", "DEAD", "CONSUMED", "DESTROYED"]],
-                ] as const
-              ).map(([field, values]) => (
-                <select
-                  aria-label={`Filter ${field}`}
-                  key={field}
-                  value={filter[field]}
-                  onChange={(e) =>
-                    setFilter({ ...filter, [field]: e.target.value })
-                  }
-                >
-                  <option value="">All {field}s</option>
-                  {values.map((v) => (
-                    <option key={v} value={v}>
-                      {v}
-                    </option>
-                  ))}
-                </select>
-              ))}
               <select
                 aria-label="Collection owner"
                 value={filter.owner}
@@ -586,21 +554,39 @@ export function App() {
                 {e}
               </p>
             ))}
-            <div className="actions">
-              {p.decks.map((d) => (
-                <button
-                  className="secondary"
-                  key={d.deckId}
-                  onClick={() => {
-                    setDraft(d.instanceIds);
-                    setDeckName(d.name);
-                    setDeckId(d.deckId);
-                  }}
-                >
-                  Edit {d.name}
-                </button>
-              ))}
-            </div>
+            <section className="saved-deck-list" aria-label="Your saved decks">
+              <h2>Your saved decks</h2>
+              {!p.decks.some((d) => d.ownerId === "human") && (
+                <p>
+                  No saved decks yet. Choose 30 cards below and save your deck.
+                </p>
+              )}
+              <div className="actions">
+                {p.decks
+                  .filter((d) => d.ownerId === "human")
+                  .map((d) => (
+                    <button
+                      className="secondary saved-deck"
+                      aria-pressed={deckId === d.deckId}
+                      key={d.deckId}
+                      onClick={() => {
+                        setDraft([...d.instanceIds]);
+                        setDeckName(d.name);
+                        setDeckId(d.deckId);
+                      }}
+                    >
+                      <strong>{d.name}</strong>
+                      <small>
+                        {d.instanceIds.length} cards ·{" "}
+                        {deckErrors(p, d.instanceIds, "human").length
+                          ? "Needs rebuilding"
+                          : "Ready to play"}
+                      </small>
+                    </button>
+                  ))}
+              </div>
+            </section>
+            <DeckStatistics instances={p.instances} ids={draft} />
             {draft.some(
               (id) =>
                 !p.instances[id] ||
@@ -621,32 +607,44 @@ export function App() {
                 Remove lost / captured cards
               </button>
             )}
-            <div className="card-grid">
-              {owned
-                .filter((c) => c.lifecycleStatus === "ALIVE")
-                .map((c) => {
-                  const selected = draft.includes(c.instanceId);
-                  const full =
-                    draft.length >= 30 ||
-                    draft.filter(
-                      (id) => p.instances[id]?.definitionId === c.definitionId,
-                    ).length >= 2;
-                  return (
-                    <Card
-                      key={c.instanceId}
-                      instance={c}
-                      selected={selected}
-                      disabled={!selected && full}
-                      onClick={() =>
-                        setDraft(
-                          selected
-                            ? draft.filter((id) => id !== c.instanceId)
-                            : [...draft, c.instanceId],
-                        )
-                      }
-                    />
-                  );
-                })}
+            <div className="filters" aria-label="Deck card filters">
+              <CardFilters value={deckFilter} onChange={setDeckFilter} />
+            </div>
+            <p>
+              {deckCards.length} matching copies · Only alive cards can be
+              added. Changing filters keeps your selection.
+            </p>
+            {!deckCards.length && (
+              <p className="empty">
+                No matching cards. Try clearing your filters.
+              </p>
+            )}
+            <div className="card-grid deck-card-pool">
+              {deckCards.map((c) => {
+                const selected = draft.includes(c.instanceId);
+                const full =
+                  draft.length >= 30 ||
+                  draft.filter(
+                    (id) => p.instances[id]?.definitionId === c.definitionId,
+                  ).length >= 2;
+                return (
+                  <Card
+                    key={c.instanceId}
+                    instance={c}
+                    selected={selected}
+                    disabled={
+                      !selected && (full || c.lifecycleStatus !== "ALIVE")
+                    }
+                    onClick={() =>
+                      setDraft(
+                        selected
+                          ? draft.filter((id) => id !== c.instanceId)
+                          : [...draft, c.instanceId],
+                      )
+                    }
+                  />
+                );
+              })}
             </div>
           </>
         )}
