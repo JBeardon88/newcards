@@ -12,6 +12,7 @@
     "format": "prettier --write src tests content scripts/validate-content.mjs *.md *.json index.html",
     "format:check": "prettier --check src tests content scripts/validate-content.mjs *.md *.json index.html",
     "test:ui": "node scripts/check-play-ui.mjs",
+    "test:drag": "node scripts/check-card-drag.mjs",
     "content:validate": "node scripts/validate-content.mjs",
     "predev": "node scripts/validate-content.mjs",
     "prebuild": "node scripts/validate-content.mjs",

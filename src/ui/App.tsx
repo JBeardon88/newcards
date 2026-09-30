@@ -81,7 +81,10 @@ export function App() {
     persistence.save(next);
     setProfile(next);
   };
-  const run = (fn: (p: Profile) => void) => {
+  const run = (
+    fn: (p: Profile) => void,
+    onFailure?: (message: string) => void,
+  ) => {
     try {
       if (!profile) return false;
       const next = structuredClone(profile);
@@ -90,18 +93,27 @@ export function App() {
       setError("");
       return true;
     } catch (e) {
-      setError(String(e));
+      const message = e instanceof Error ? e.message : String(e);
+      setError(message);
+      onFailure?.(message);
       return false;
     }
   };
-  const send = (command: GameCommand) =>
-    run((p) => {
+  const send = (
+    command: GameCommand,
+    onFailure?: (message: string) => void,
+  ) => {
+    let finished = false;
+    const accepted = run((p) => {
       if (!p.activeMatch) throw Error("No active match.");
       const result = execute(p.activeMatch, command);
       if (result.error) throw Error(result.error);
       p.activeMatch = result.state;
-      if (result.state.status === "FINISHED") setScreen("Settlement");
-    });
+      finished = result.state.status === "FINISHED";
+    }, onFailure);
+    if (accepted && finished) setScreen("Settlement");
+    return accepted;
+  };
   useEffect(() => {
     const listener = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {

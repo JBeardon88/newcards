@@ -28,7 +28,7 @@ npm run preview   # serve built application
 1. Open the six starter packs: three Funguys and three Technocracy. Each contains twelve uniquely minted copies (72 human-owned cards total).
 2. Visit **Collection** and click any copy to inspect its identity and history.
 3. In **Deck builder**, select instances manually or auto-build Funguys, Technocracy, or Mixed. Save a 30-card deck with no more than two copies of a definition. Random packs do **not** guarantee enough distinct cards for a single-set deck; mint more free test packs when the builder reports insufficient cards.
-4. Click **Play AI**. Advance upkeep into main phase. Click a hand card, choose a legal target if needed, and confirm play. Click deployed artifacts to attach them for one energy.
+4. Click **Play AI**. Advance upkeep into main phase. Drag a hand card onto your board to play it, or onto a highlighted creature/player life total to target it. Dropping a targeted card on empty board space opens a target picker; cancel keeps it in hand. Illegal drops show a popup explaining why, without spending energy. You can also click a hand card, choose a legal target, and confirm play. Artifacts deploy first; click a deployed artifact to attach it for one energy.
 5. Advance to attack, select ready creatures, and confirm attackers. On defense, select one blocker per attacker and resolve combat. Continue through second main and end phase. Discard down to seven when prompted.
 6. At match end, review **Settlement**, select up to one eligible enemy artifact if you won, then **Commit settlement**.
 7. Return to collection: terminal cards remain inspectable, captures have new owners, and every copy has an appended history. Rebuild decks containing lost or captured copies.
@@ -44,9 +44,10 @@ Browser regression checks (optional; the ordinary engine tests need no browser):
 ```sh
 npx playwright install chromium
 npm run test:ui
+npm run test:drag
 ```
 
-These check viewport fit, manual approval, paced playback, pause, navigation, refresh, human blocking and graveyard inspection. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an existing Chromium executable.
+These check viewport fit, manual approval, paced playback, pause, navigation, refresh, human blocking, graveyard inspection, drag/drop targeting and invalid-play popups. Drag/drop uses desktop browser dragging; click controls remain available for keyboard and touch use. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` may point to an existing Chromium executable. Set `PLAYWRIGHT_ARTIFACT_DIR` to save screenshots from the drag/drop checks.
 
 ## Rules implemented
 

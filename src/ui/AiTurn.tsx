@@ -7,9 +7,11 @@ import { aiController } from "../engine/ai";
 export function AiTurn({
   game,
   send,
+  paused = false,
 }: {
   game: GameState;
   send: (command: GameCommand) => boolean;
+  paused?: boolean;
 }) {
   const [automatic, setAutomatic] = useState(false);
   const [delay, setDelay] = useState(1800);
@@ -29,7 +31,7 @@ export function AiTurn({
   const key = `${game.matchId}:${game.commands.length}`;
   const submitted = useRef("");
   const approve = () => {
-    if (!command || submitted.current === key) return;
+    if (paused || !command || submitted.current === key) return;
     submitted.current = key;
     if (!sendRef.current(command)) {
       submitted.current = "";
@@ -37,7 +39,7 @@ export function AiTurn({
     }
   };
   useEffect(() => {
-    if (!automatic || !command || preview?.error) return;
+    if (paused || !automatic || !command || preview?.error) return;
     const timer = setTimeout(() => {
       if (submitted.current !== key) {
         submitted.current = key;
@@ -48,7 +50,7 @@ export function AiTurn({
       }
     }, delay);
     return () => clearTimeout(timer);
-  }, [automatic, command, delay, key, preview?.error]);
+  }, [automatic, command, delay, key, preview?.error, paused]);
   const proposed = preview?.state.events
     .slice(game.events.length)
     .filter((e) => e.type !== "COMMAND");
@@ -108,7 +110,7 @@ export function AiTurn({
             </ul>
           )}
           {!automatic && (
-            <button onClick={approve} disabled={!!preview?.error}>
+            <button onClick={approve} disabled={paused || !!preview?.error}>
               Approve next action
             </button>
           )}

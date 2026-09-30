@@ -1,3 +1,4 @@
+import type { DragEventHandler } from "react";
 import { sets } from "../content/catalog";
 import { cards } from "../data/cards";
 import type { CardInstance, MatchCard, GameState } from "../engine/model";
@@ -10,6 +11,10 @@ export function Card({
   selected = false,
   disabled = false,
   label,
+  onDragStart,
+  onDragEnd,
+  dragging = false,
+  dropTarget = false,
 }: {
   instance?: CardInstance;
   matchCard?: MatchCard;
@@ -18,6 +23,10 @@ export function Card({
   selected?: boolean;
   disabled?: boolean;
   label?: string;
+  onDragStart?: DragEventHandler<HTMLButtonElement>;
+  onDragEnd?: DragEventHandler<HTMLButtonElement>;
+  dragging?: boolean;
+  dropTarget?: boolean;
 }) {
   const d = cards[(instance?.definitionId ?? matchCard?.definitionId)!];
   const power =
@@ -29,7 +38,14 @@ export function Card({
       title={`${d.name} · ${d.cost} energy · ${d.rulesText}`}
       disabled={disabled}
       onClick={onClick}
-      className={`card ${d.art} ${selected ? "selected" : ""} ${matchCard?.tapped ? "tapped" : ""}`}
+      draggable={!!onDragStart}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      data-card-id={matchCard?.id}
+      data-drop-target={
+        matchCard?.zone === "battlefield" ? matchCard.id : undefined
+      }
+      className={`card ${d.art} ${selected ? "selected" : ""} ${matchCard?.tapped ? "tapped" : ""} ${dragging ? "dragging" : ""} ${dropTarget ? "drop-target" : ""}`}
       aria-label={
         label ?? `${d.name}${instance ? ` #${instance.serialNumber}` : ""}`
       }
